@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/admin/salas/$id")({
+export const Route = createFileRoute("/_authenticated/admin/salas_/$id")({
   component: SalaDetail,
 });
 
@@ -44,7 +44,7 @@ function SalaDetail() {
           <h2 className="font-display mt-1 text-3xl">{sala.nome}</h2>
           <p className="text-sm text-muted-foreground">Código: <code className="bg-muted px-1.5">{sala.codigo}</code></p>
         </div>
-        <Link to="/admin/atividades/nova"><Button>Criar atividade</Button></Link>
+        <Link to="/admin/atividades"><Button>Criar atividade</Button></Link>
       </div>
       <Card>
         <CardHeader><CardTitle>Alunos ({alunos.length})</CardTitle></CardHeader>
