@@ -28,7 +28,7 @@ export const Route = createFileRoute("/_authenticated/aluno/atividades_/$id")({
 });
 
 function Page() {
-  const { id } = useParams({ from: "/_authenticated/aluno/atividades/$id" });
+  const { id } = Route.useParams();
   const [ativ, setAtiv] = useState<any>(null);
   const [entrega, setEntrega] = useState<any>(null);
   const [texto, setTexto] = useState("");

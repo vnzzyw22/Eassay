@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/admin/salas_/$id")({
 });
 
 function SalaDetail() {
-  const { id } = useParams({ from: "/_authenticated/admin/salas/$id" });
+  const { id } = Route.useParams();
   const [sala, setSala] = useState<any>(null);
   const [alunos, setAlunos] = useState<any[]>([]);
 
