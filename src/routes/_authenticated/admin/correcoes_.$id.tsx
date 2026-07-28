@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/admin/correcoes/$id")({
+export const Route = createFileRoute("/_authenticated/admin/correcoes_/$id")({
   component: Page,
 });
 

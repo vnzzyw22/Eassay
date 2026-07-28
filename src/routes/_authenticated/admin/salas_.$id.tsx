@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_authenticated/admin/salas/$id")({
+export const Route = createFileRoute("/_authenticated/admin/salas_/$id")({
   component: SalaDetail,
 });
 

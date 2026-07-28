@@ -15,7 +15,7 @@ import {
   contarPalavras,
 } from "@/lib/atividade-status";
 
-export const Route = createFileRoute("/_authenticated/aluno/atividades/$id")({
+export const Route = createFileRoute("/_authenticated/aluno/atividades_/$id")({
   head: () => ({
     meta: [
       { title: "Escrever redação — Eassay" },
