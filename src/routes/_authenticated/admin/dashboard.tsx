@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProfilesMap } from "@/lib/profiles";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_authenticated/admin/dashboard")({
@@ -19,7 +21,7 @@ function Dashboard() {
         supabase.from("salas").select("id", { count: "exact", head: true }),
         supabase.from("atividades").select("id", { count: "exact", head: true }).eq("publicada", true).gt("prazo", new Date().toISOString()),
         supabase.from("entregas").select("id", { count: "exact", head: true }).eq("status", "entregue"),
-        supabase.from("entregas").select("id, status, submitted_at, aluno_id, atividade_id, atividades(titulo), profiles!entregas_aluno_id_fkey(nome_completo)").order("submitted_at", { ascending: false, nullsFirst: false }).limit(10),
+        supabase.from("entregas").select("id, status, submitted_at, aluno_id, atividade_id, atividades(titulo)").order("submitted_at", { ascending: false, nullsFirst: false }).limit(10),
       ]);
       setStats({
         alunos: alunos.count ?? 0,
@@ -27,7 +29,10 @@ function Dashboard() {
         atividadesAbertas: atividades.count ?? 0,
         pendentes: entregas.count ?? 0,
       });
-      setUltimas(ultimasEntregas.data ?? []);
+      const lista = ultimasEntregas.data ?? [];
+      const profiles = await fetchProfilesMap(lista.map((e) => e.aluno_id));
+      setUltimas(lista.map((e) => ({ ...e, profiles: profiles[e.aluno_id] ?? null })));
+
     })();
   }, []);
 

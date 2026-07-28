@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProfilesMap } from "@/lib/profiles";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -15,11 +16,13 @@ function Page() {
     (async () => {
       const { data } = await supabase
         .from("entregas")
-        .select("id, status, submitted_at, nota, atividades(titulo), profiles!entregas_aluno_id_fkey(nome_completo)")
+        .select("id, status, submitted_at, nota, aluno_id, atividades(titulo)")
         .order("submitted_at", { ascending: false, nullsFirst: false });
-      setEntregas(data ?? []);
+      const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
+      setEntregas((data ?? []).map((e) => ({ ...e, profiles: profiles[e.aluno_id] ?? null })));
     })();
   }, []);
+
   return (
     <div className="space-y-6">
       <h2 className="font-display text-3xl">Correções</h2>

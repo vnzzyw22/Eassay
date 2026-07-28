@@ -1,6 +1,8 @@
 import { createFileRoute, useParams, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProfilesMap } from "@/lib/profiles";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,10 +25,12 @@ function Page() {
     (async () => {
       const { data } = await supabase
         .from("entregas")
-        .select("*, atividades(titulo, descricao), profiles!entregas_aluno_id_fkey(nome_completo, email)")
+        .select("*, atividades(titulo, descricao)")
         .eq("id", id)
         .single();
-      setEntrega(data);
+      const profiles = await fetchProfilesMap([data?.aluno_id]);
+      setEntrega(data ? { ...data, profiles: profiles[data.aluno_id] ?? null } : null);
+
       setNota(data?.nota != null ? String(data.nota) : "");
       setComentario(data?.comentario ?? "");
       if (data?.arquivo_url) {
