@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProfilesMap } from "@/lib/profiles";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_authenticated/admin/alunos")({
@@ -12,13 +13,31 @@ function Page() {
   const [alunos, setAlunos] = useState<any[]>([]);
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
+      const { data: roles } = await supabase
         .from("user_roles")
-        .select("user_id, profiles(nome_completo, email), alunos_salas:alunos_salas!alunos_salas_aluno_id_fkey(salas(nome))")
+        .select("user_id")
         .eq("role", "aluno");
-      setAlunos(data ?? []);
+      const ids = (roles ?? []).map((r) => r.user_id);
+      const [profiles, vinculos] = await Promise.all([
+        fetchProfilesMap(ids),
+        supabase.from("alunos_salas").select("aluno_id, salas(nome)").in("aluno_id", ids.length ? ids : ["00000000-0000-0000-0000-000000000000"]),
+      ]);
+      const salasPorAluno: Record<string, string[]> = {};
+      for (const v of vinculos.data ?? []) {
+        const nome = (v.salas as any)?.nome;
+        if (!nome) continue;
+        (salasPorAluno[v.aluno_id] ??= []).push(nome);
+      }
+      setAlunos(
+        (roles ?? []).map((r) => ({
+          user_id: r.user_id,
+          profiles: profiles[r.user_id] ?? null,
+          salas: salasPorAluno[r.user_id] ?? [],
+        })),
+      );
     })();
   }, []);
+
   return (
     <div className="space-y-6">
       <h2 className="font-display text-3xl">Alunos</h2>
