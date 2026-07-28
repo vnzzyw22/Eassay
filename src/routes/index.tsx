@@ -14,7 +14,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Eassay — Gestão de redações escolares" },
       {
         property: "og:description",
-        content: "Sistema simples para publicar atividades, receber e corrigir redações.",
+        content: "Plataforma para professores gerenciarem redações escolares e alunos entregarem suas produções textuais.",
       },
     ],
   }),
