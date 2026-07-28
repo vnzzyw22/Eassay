@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProfilesMap } from "@/lib/profiles";
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
@@ -19,9 +21,11 @@ function SalaDetail() {
     setSala(s);
     const { data: als } = await supabase
       .from("alunos_salas")
-      .select("aluno_id, profiles(nome_completo, email)")
+      .select("aluno_id")
       .eq("sala_id", id);
-    setAlunos(als ?? []);
+    const profiles = await fetchProfilesMap((als ?? []).map((a) => a.aluno_id));
+    setAlunos((als ?? []).map((a) => ({ aluno_id: a.aluno_id, profiles: profiles[a.aluno_id] ?? null })));
+
   };
   useEffect(() => { load(); }, [id]);
 

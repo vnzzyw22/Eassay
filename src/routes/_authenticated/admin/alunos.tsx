@@ -55,7 +55,7 @@ function Page() {
                     <p className="text-muted-foreground">{a.profiles?.email}</p>
                   </div>
                   <div className="text-right text-muted-foreground">
-                    {a.alunos_salas?.map((x: any) => x.salas?.nome).filter(Boolean).join(", ") || "—"}
+                    {a.salas.join(", ") || "—"}
                   </div>
                 </li>
               ))}

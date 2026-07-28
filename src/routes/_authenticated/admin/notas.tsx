@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchProfilesMap } from "@/lib/profiles";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_authenticated/admin/notas")({
@@ -14,12 +15,14 @@ function Page() {
     (async () => {
       const { data } = await supabase
         .from("entregas")
-        .select("id, nota, corrected_at, atividades(titulo), profiles!entregas_aluno_id_fkey(nome_completo)")
+        .select("id, nota, corrected_at, aluno_id, atividades(titulo)")
         .eq("status", "corrigida")
         .order("corrected_at", { ascending: false });
-      setRows(data ?? []);
+      const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
+      setRows((data ?? []).map((r) => ({ ...r, profiles: profiles[r.aluno_id] ?? null })));
     })();
   }, []);
+
   return (
     <div className="space-y-6">
       <h2 className="font-display text-3xl">Notas</h2>
