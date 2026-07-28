@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProfilesMap } from "@/lib/profiles";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/_authenticated/admin/salas_/$id")({
 });
 
 function SalaDetail() {
-  const { id } = useParams({ from: "/_authenticated/admin/salas/$id" });
+  const { id } = Route.useParams();
   const [sala, setSala] = useState<any>(null);
   const [alunos, setAlunos] = useState<any[]>([]);
 

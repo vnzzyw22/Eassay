@@ -1,4 +1,4 @@
-import { createFileRoute, useParams, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProfilesMap } from "@/lib/profiles";
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/admin/correcoes_/$id")({
 });
 
 function Page() {
-  const { id } = useParams({ from: "/_authenticated/admin/correcoes/$id" });
+  const { id } = Route.useParams();
   const [entrega, setEntrega] = useState<any>(null);
   const [nota, setNota] = useState<string>("");
   const [comentario, setComentario] = useState("");
