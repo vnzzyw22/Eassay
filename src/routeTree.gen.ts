@@ -29,10 +29,9 @@ import { Route as AuthenticatedAdminCorrecoesRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
 import { Route as AuthenticatedAdminAtividadesRouteImport } from './routes/_authenticated/admin/atividades'
 import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
-import { Route as AuthenticatedAlunoAtividadesIdRouteImport } from './routes/_authenticated/aluno/atividades.$id'
-import { Route as AuthenticatedAdminSalasIdRouteImport } from './routes/_authenticated/admin/salas.$id'
-import { Route as AuthenticatedAdminCorrecoesIdRouteImport } from './routes/_authenticated/admin/correcoes.$id'
-import { Route as AuthenticatedAdminAtividadesNovaRouteImport } from './routes/_authenticated/admin/atividades.nova'
+import { Route as AuthenticatedAlunoAtividadesIdRouteImport } from './routes/_authenticated/aluno/atividades_.$id'
+import { Route as AuthenticatedAdminSalasIdRouteImport } from './routes/_authenticated/admin/salas_.$id'
+import { Route as AuthenticatedAdminCorrecoesIdRouteImport } from './routes/_authenticated/admin/correcoes_.$id'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -145,27 +144,21 @@ const AuthenticatedAdminAlunosRoute =
   } as any)
 const AuthenticatedAlunoAtividadesIdRoute =
   AuthenticatedAlunoAtividadesIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAlunoAtividadesRoute,
+    id: '/atividades_/$id',
+    path: '/atividades/$id',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
   } as any)
 const AuthenticatedAdminSalasIdRoute =
   AuthenticatedAdminSalasIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminSalasRoute,
+    id: '/salas_/$id',
+    path: '/salas/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminCorrecoesIdRoute =
   AuthenticatedAdminCorrecoesIdRouteImport.update({
-    id: '/$id',
-    path: '/$id',
-    getParentRoute: () => AuthenticatedAdminCorrecoesRoute,
-  } as any)
-const AuthenticatedAdminAtividadesNovaRoute =
-  AuthenticatedAdminAtividadesNovaRouteImport.update({
-    id: '/nova',
-    path: '/nova',
-    getParentRoute: () => AuthenticatedAdminAtividadesRoute,
+    id: '/correcoes_/$id',
+    path: '/correcoes/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -177,18 +170,17 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/aluno': typeof AuthenticatedAlunoRouteRouteWithChildren
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
-  '/admin/atividades': typeof AuthenticatedAdminAtividadesRouteWithChildren
+  '/admin/atividades': typeof AuthenticatedAdminAtividadesRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
-  '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRouteWithChildren
+  '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/notas': typeof AuthenticatedAdminNotasRoute
-  '/admin/salas': typeof AuthenticatedAdminSalasRouteWithChildren
-  '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRouteWithChildren
+  '/admin/salas': typeof AuthenticatedAdminSalasRoute
+  '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
-  '/admin/atividades/nova': typeof AuthenticatedAdminAtividadesNovaRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
   '/admin/salas/$id': typeof AuthenticatedAdminSalasIdRoute
   '/aluno/atividades/$id': typeof AuthenticatedAlunoAtividadesIdRoute
@@ -202,18 +194,17 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/aluno': typeof AuthenticatedAlunoRouteRouteWithChildren
   '/admin/alunos': typeof AuthenticatedAdminAlunosRoute
-  '/admin/atividades': typeof AuthenticatedAdminAtividadesRouteWithChildren
+  '/admin/atividades': typeof AuthenticatedAdminAtividadesRoute
   '/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
-  '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRouteWithChildren
+  '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/notas': typeof AuthenticatedAdminNotasRoute
-  '/admin/salas': typeof AuthenticatedAdminSalasRouteWithChildren
-  '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRouteWithChildren
+  '/admin/salas': typeof AuthenticatedAdminSalasRoute
+  '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
-  '/admin/atividades/nova': typeof AuthenticatedAdminAtividadesNovaRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
   '/admin/salas/$id': typeof AuthenticatedAdminSalasIdRoute
   '/aluno/atividades/$id': typeof AuthenticatedAlunoAtividadesIdRoute
@@ -229,21 +220,20 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/_authenticated/aluno': typeof AuthenticatedAlunoRouteRouteWithChildren
   '/_authenticated/admin/alunos': typeof AuthenticatedAdminAlunosRoute
-  '/_authenticated/admin/atividades': typeof AuthenticatedAdminAtividadesRouteWithChildren
+  '/_authenticated/admin/atividades': typeof AuthenticatedAdminAtividadesRoute
   '/_authenticated/admin/configuracoes': typeof AuthenticatedAdminConfiguracoesRoute
-  '/_authenticated/admin/correcoes': typeof AuthenticatedAdminCorrecoesRouteWithChildren
+  '/_authenticated/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/notas': typeof AuthenticatedAdminNotasRoute
-  '/_authenticated/admin/salas': typeof AuthenticatedAdminSalasRouteWithChildren
-  '/_authenticated/aluno/atividades': typeof AuthenticatedAlunoAtividadesRouteWithChildren
+  '/_authenticated/admin/salas': typeof AuthenticatedAdminSalasRoute
+  '/_authenticated/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/_authenticated/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/_authenticated/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/_authenticated/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
-  '/_authenticated/admin/atividades/nova': typeof AuthenticatedAdminAtividadesNovaRoute
-  '/_authenticated/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
-  '/_authenticated/admin/salas/$id': typeof AuthenticatedAdminSalasIdRoute
-  '/_authenticated/aluno/atividades/$id': typeof AuthenticatedAlunoAtividadesIdRoute
+  '/_authenticated/admin/correcoes_/$id': typeof AuthenticatedAdminCorrecoesIdRoute
+  '/_authenticated/admin/salas_/$id': typeof AuthenticatedAdminSalasIdRoute
+  '/_authenticated/aluno/atividades_/$id': typeof AuthenticatedAlunoAtividadesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -267,7 +257,6 @@ export interface FileRouteTypes {
     | '/aluno/entregas'
     | '/aluno/perfil'
     | '/api/public/valida-codigo-sala'
-    | '/admin/atividades/nova'
     | '/admin/correcoes/$id'
     | '/admin/salas/$id'
     | '/aluno/atividades/$id'
@@ -292,7 +281,6 @@ export interface FileRouteTypes {
     | '/aluno/entregas'
     | '/aluno/perfil'
     | '/api/public/valida-codigo-sala'
-    | '/admin/atividades/nova'
     | '/admin/correcoes/$id'
     | '/admin/salas/$id'
     | '/aluno/atividades/$id'
@@ -318,10 +306,9 @@ export interface FileRouteTypes {
     | '/_authenticated/aluno/entregas'
     | '/_authenticated/aluno/perfil'
     | '/api/public/valida-codigo-sala'
-    | '/_authenticated/admin/atividades/nova'
-    | '/_authenticated/admin/correcoes/$id'
-    | '/_authenticated/admin/salas/$id'
-    | '/_authenticated/aluno/atividades/$id'
+    | '/_authenticated/admin/correcoes_/$id'
+    | '/_authenticated/admin/salas_/$id'
+    | '/_authenticated/aluno/atividades_/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -476,101 +463,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAlunosRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
-    '/_authenticated/aluno/atividades/$id': {
-      id: '/_authenticated/aluno/atividades/$id'
-      path: '/$id'
+    '/_authenticated/aluno/atividades_/$id': {
+      id: '/_authenticated/aluno/atividades_/$id'
+      path: '/atividades/$id'
       fullPath: '/aluno/atividades/$id'
       preLoaderRoute: typeof AuthenticatedAlunoAtividadesIdRouteImport
-      parentRoute: typeof AuthenticatedAlunoAtividadesRoute
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
     }
-    '/_authenticated/admin/salas/$id': {
-      id: '/_authenticated/admin/salas/$id'
-      path: '/$id'
+    '/_authenticated/admin/salas_/$id': {
+      id: '/_authenticated/admin/salas_/$id'
+      path: '/salas/$id'
       fullPath: '/admin/salas/$id'
       preLoaderRoute: typeof AuthenticatedAdminSalasIdRouteImport
-      parentRoute: typeof AuthenticatedAdminSalasRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
-    '/_authenticated/admin/correcoes/$id': {
-      id: '/_authenticated/admin/correcoes/$id'
-      path: '/$id'
+    '/_authenticated/admin/correcoes_/$id': {
+      id: '/_authenticated/admin/correcoes_/$id'
+      path: '/correcoes/$id'
       fullPath: '/admin/correcoes/$id'
       preLoaderRoute: typeof AuthenticatedAdminCorrecoesIdRouteImport
-      parentRoute: typeof AuthenticatedAdminCorrecoesRoute
-    }
-    '/_authenticated/admin/atividades/nova': {
-      id: '/_authenticated/admin/atividades/nova'
-      path: '/nova'
-      fullPath: '/admin/atividades/nova'
-      preLoaderRoute: typeof AuthenticatedAdminAtividadesNovaRouteImport
-      parentRoute: typeof AuthenticatedAdminAtividadesRoute
+      parentRoute: typeof AuthenticatedAdminRouteRoute
     }
   }
 }
-
-interface AuthenticatedAdminAtividadesRouteChildren {
-  AuthenticatedAdminAtividadesNovaRoute: typeof AuthenticatedAdminAtividadesNovaRoute
-}
-
-const AuthenticatedAdminAtividadesRouteChildren: AuthenticatedAdminAtividadesRouteChildren =
-  {
-    AuthenticatedAdminAtividadesNovaRoute:
-      AuthenticatedAdminAtividadesNovaRoute,
-  }
-
-const AuthenticatedAdminAtividadesRouteWithChildren =
-  AuthenticatedAdminAtividadesRoute._addFileChildren(
-    AuthenticatedAdminAtividadesRouteChildren,
-  )
-
-interface AuthenticatedAdminCorrecoesRouteChildren {
-  AuthenticatedAdminCorrecoesIdRoute: typeof AuthenticatedAdminCorrecoesIdRoute
-}
-
-const AuthenticatedAdminCorrecoesRouteChildren: AuthenticatedAdminCorrecoesRouteChildren =
-  {
-    AuthenticatedAdminCorrecoesIdRoute: AuthenticatedAdminCorrecoesIdRoute,
-  }
-
-const AuthenticatedAdminCorrecoesRouteWithChildren =
-  AuthenticatedAdminCorrecoesRoute._addFileChildren(
-    AuthenticatedAdminCorrecoesRouteChildren,
-  )
-
-interface AuthenticatedAdminSalasRouteChildren {
-  AuthenticatedAdminSalasIdRoute: typeof AuthenticatedAdminSalasIdRoute
-}
-
-const AuthenticatedAdminSalasRouteChildren: AuthenticatedAdminSalasRouteChildren =
-  {
-    AuthenticatedAdminSalasIdRoute: AuthenticatedAdminSalasIdRoute,
-  }
-
-const AuthenticatedAdminSalasRouteWithChildren =
-  AuthenticatedAdminSalasRoute._addFileChildren(
-    AuthenticatedAdminSalasRouteChildren,
-  )
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminAlunosRoute: typeof AuthenticatedAdminAlunosRoute
-  AuthenticatedAdminAtividadesRoute: typeof AuthenticatedAdminAtividadesRouteWithChildren
+  AuthenticatedAdminAtividadesRoute: typeof AuthenticatedAdminAtividadesRoute
   AuthenticatedAdminConfiguracoesRoute: typeof AuthenticatedAdminConfiguracoesRoute
-  AuthenticatedAdminCorrecoesRoute: typeof AuthenticatedAdminCorrecoesRouteWithChildren
+  AuthenticatedAdminCorrecoesRoute: typeof AuthenticatedAdminCorrecoesRoute
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedAdminNotasRoute: typeof AuthenticatedAdminNotasRoute
-  AuthenticatedAdminSalasRoute: typeof AuthenticatedAdminSalasRouteWithChildren
+  AuthenticatedAdminSalasRoute: typeof AuthenticatedAdminSalasRoute
+  AuthenticatedAdminCorrecoesIdRoute: typeof AuthenticatedAdminCorrecoesIdRoute
+  AuthenticatedAdminSalasIdRoute: typeof AuthenticatedAdminSalasIdRoute
 }
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminAlunosRoute: AuthenticatedAdminAlunosRoute,
-    AuthenticatedAdminAtividadesRoute:
-      AuthenticatedAdminAtividadesRouteWithChildren,
+    AuthenticatedAdminAtividadesRoute: AuthenticatedAdminAtividadesRoute,
     AuthenticatedAdminConfiguracoesRoute: AuthenticatedAdminConfiguracoesRoute,
-    AuthenticatedAdminCorrecoesRoute:
-      AuthenticatedAdminCorrecoesRouteWithChildren,
+    AuthenticatedAdminCorrecoesRoute: AuthenticatedAdminCorrecoesRoute,
     AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
     AuthenticatedAdminNotasRoute: AuthenticatedAdminNotasRoute,
-    AuthenticatedAdminSalasRoute: AuthenticatedAdminSalasRouteWithChildren,
+    AuthenticatedAdminSalasRoute: AuthenticatedAdminSalasRoute,
+    AuthenticatedAdminCorrecoesIdRoute: AuthenticatedAdminCorrecoesIdRoute,
+    AuthenticatedAdminSalasIdRoute: AuthenticatedAdminSalasIdRoute,
   }
 
 const AuthenticatedAdminRouteRouteWithChildren =
@@ -578,34 +517,21 @@ const AuthenticatedAdminRouteRouteWithChildren =
     AuthenticatedAdminRouteRouteChildren,
   )
 
-interface AuthenticatedAlunoAtividadesRouteChildren {
-  AuthenticatedAlunoAtividadesIdRoute: typeof AuthenticatedAlunoAtividadesIdRoute
-}
-
-const AuthenticatedAlunoAtividadesRouteChildren: AuthenticatedAlunoAtividadesRouteChildren =
-  {
-    AuthenticatedAlunoAtividadesIdRoute: AuthenticatedAlunoAtividadesIdRoute,
-  }
-
-const AuthenticatedAlunoAtividadesRouteWithChildren =
-  AuthenticatedAlunoAtividadesRoute._addFileChildren(
-    AuthenticatedAlunoAtividadesRouteChildren,
-  )
-
 interface AuthenticatedAlunoRouteRouteChildren {
-  AuthenticatedAlunoAtividadesRoute: typeof AuthenticatedAlunoAtividadesRouteWithChildren
+  AuthenticatedAlunoAtividadesRoute: typeof AuthenticatedAlunoAtividadesRoute
   AuthenticatedAlunoDashboardRoute: typeof AuthenticatedAlunoDashboardRoute
   AuthenticatedAlunoEntregasRoute: typeof AuthenticatedAlunoEntregasRoute
   AuthenticatedAlunoPerfilRoute: typeof AuthenticatedAlunoPerfilRoute
+  AuthenticatedAlunoAtividadesIdRoute: typeof AuthenticatedAlunoAtividadesIdRoute
 }
 
 const AuthenticatedAlunoRouteRouteChildren: AuthenticatedAlunoRouteRouteChildren =
   {
-    AuthenticatedAlunoAtividadesRoute:
-      AuthenticatedAlunoAtividadesRouteWithChildren,
+    AuthenticatedAlunoAtividadesRoute: AuthenticatedAlunoAtividadesRoute,
     AuthenticatedAlunoDashboardRoute: AuthenticatedAlunoDashboardRoute,
     AuthenticatedAlunoEntregasRoute: AuthenticatedAlunoEntregasRoute,
     AuthenticatedAlunoPerfilRoute: AuthenticatedAlunoPerfilRoute,
+    AuthenticatedAlunoAtividadesIdRoute: AuthenticatedAlunoAtividadesIdRoute,
   }
 
 const AuthenticatedAlunoRouteRouteWithChildren =
