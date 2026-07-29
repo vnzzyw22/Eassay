@@ -16,6 +16,7 @@ export const Route = createFileRoute("/cadastro")({
 
 function CadastroPage() {
   const [nome, setNome] = useState("");
+  const [numeroChamada, setNumeroChamada] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [codigo, setCodigo] = useState("");
