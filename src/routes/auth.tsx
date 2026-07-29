@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { matricularAluno } from "@/lib/matricula.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,6 +19,7 @@ function AuthPage() {
   const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const matricular = useServerFn(matricularAluno);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +36,23 @@ function AuthPage() {
       .select("role")
       .eq("user_id", data.user!.id);
     const isAdmin = roles?.some((r) => r.role === "admin");
+
+    // conclui a matrícula pendente (cadastro com confirmação de email)
+    const pendente = localStorage.getItem("eassay_codigo_sala");
+    if (!isAdmin && pendente) {
+      try {
+        await matricular({ data: { codigo: pendente } });
+        localStorage.removeItem("eassay_codigo_sala");
+      } catch (err: any) {
+        toast.error(
+          "Não foi possível vincular você à sala: " + (err?.message ?? "erro desconhecido"),
+        );
+      }
+    }
+
     navigate({ to: isAdmin ? "/admin/dashboard" : "/aluno/dashboard" });
   };
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
