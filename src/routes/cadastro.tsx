@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { matricularAluno } from "@/lib/matricula.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,12 +21,13 @@ function CadastroPage() {
   const [codigo, setCodigo] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const matricular = useServerFn(matricularAluno);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      // 1. valida código da sala (via server fn pública)
+      // 1. valida código da sala (via rota pública)
       const res = await fetch("/api/public/valida-codigo-sala", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -36,7 +39,6 @@ function CadastroPage() {
         setLoading(false);
         return;
       }
-      const salaId: string = info.sala_id;
 
       // 2. cria conta
       const { data, error } = await supabase.auth.signUp({
@@ -52,27 +54,40 @@ function CadastroPage() {
         setLoading(false);
         return;
       }
+
+      // guarda o código para concluir a matrícula no primeiro login,
+      // caso a conta precise de confirmação de email
+      localStorage.setItem("eassay_codigo_sala", codigo.trim().toUpperCase());
+
       if (!data.session) {
-        toast.success("Cadastro realizado! Verifique seu email para confirmar.");
+        toast.success("Cadastro realizado! Confirme seu email e depois faça login.");
+        setLoading(false);
+        navigate({ to: "/auth" });
+        return;
+      }
+
+      // 3. vincula aluno à sala (perfil + papel + vínculo), no servidor
+      try {
+        await matricular({ data: { codigo: codigo.trim().toUpperCase() } });
+        localStorage.removeItem("eassay_codigo_sala");
+      } catch (err: any) {
+        toast.error(
+          "Conta criada, mas não foi possível vincular você à sala: " +
+            (err?.message ?? "erro desconhecido") +
+            ". Entre em contato com a professora.",
+        );
         setLoading(false);
         return;
       }
-      // 3. vincula aluno à sala
-      const { error: linkErr } = await supabase
-        .from("alunos_salas")
-        .insert({ aluno_id: data.user!.id, sala_id: salaId });
-      if (linkErr) {
-        toast.error("Conta criada, mas falhou vincular à sala: " + linkErr.message);
-        setLoading(false);
-        return;
-      }
+
       toast.success("Cadastro concluído!");
       navigate({ to: "/aluno/dashboard" });
     } catch (err) {
-      toast.error("Erro inesperado.");
+      toast.error("Erro inesperado no cadastro.");
       setLoading(false);
     }
   };
+
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4 py-8">
