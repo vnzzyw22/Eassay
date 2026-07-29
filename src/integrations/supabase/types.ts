@@ -115,6 +115,7 @@ export type Database = {
           corrected_at: string | null
           created_at: string
           id: string
+          marcacoes: Json
           nota: number | null
           status: Database["public"]["Enums"]["entrega_status"]
           submitted_at: string | null
@@ -129,6 +130,7 @@ export type Database = {
           corrected_at?: string | null
           created_at?: string
           id?: string
+          marcacoes?: Json
           nota?: number | null
           status?: Database["public"]["Enums"]["entrega_status"]
           submitted_at?: string | null
@@ -143,6 +145,7 @@ export type Database = {
           corrected_at?: string | null
           created_at?: string
           id?: string
+          marcacoes?: Json
           nota?: number | null
           status?: Database["public"]["Enums"]["entrega_status"]
           submitted_at?: string | null
@@ -165,18 +168,21 @@ export type Database = {
           email: string
           id: string
           nome_completo: string
+          numero_chamada: number | null
         }
         Insert: {
           created_at?: string
           email: string
           id: string
           nome_completo: string
+          numero_chamada?: number | null
         }
         Update: {
           created_at?: string
           email?: string
           id?: string
           nome_completo?: string
+          numero_chamada?: number | null
         }
         Relationships: []
       }

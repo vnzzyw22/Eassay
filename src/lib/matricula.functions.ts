@@ -11,7 +11,11 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
  */
 export const matricularAluno = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data) => z.object({ codigo: z.string().min(1) }).parse(data))
+  .inputValidator((data) =>
+    z
+      .object({ codigo: z.string().min(1), numero_chamada: z.number().int().positive().optional() })
+      .parse(data),
+  )
   .handler(async ({ data, context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const userId = context.userId;
@@ -21,6 +25,8 @@ export const matricularAluno = createServerFn({ method: "POST" })
       (claims.user_metadata?.nome_completo as string) ||
       (claims.user_metadata?.full_name as string) ||
       email;
+    const numeroChamada =
+      data.numero_chamada ?? (Number(claims.user_metadata?.numero_chamada) || null);
 
     const { data: sala, error: salaErr } = await supabaseAdmin
       .from("salas")
@@ -32,7 +38,10 @@ export const matricularAluno = createServerFn({ method: "POST" })
 
     const { error: profErr } = await supabaseAdmin
       .from("profiles")
-      .upsert({ id: userId, nome_completo: nome, email }, { onConflict: "id" });
+      .upsert(
+        { id: userId, nome_completo: nome, email, numero_chamada: numeroChamada },
+        { onConflict: "id" },
+      );
     if (profErr) throw new Error("Falha ao criar o perfil: " + profErr.message);
 
     const { data: papeis } = await supabaseAdmin

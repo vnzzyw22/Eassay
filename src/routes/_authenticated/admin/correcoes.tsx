@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { fetchProfilesMap } from "@/lib/profiles";
+import { fetchProfilesMap, ordenarPorChamada } from "@/lib/profiles";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -11,7 +12,9 @@ export const Route = createFileRoute("/_authenticated/admin/correcoes")({
 });
 
 function Page() {
-  const [entregas, setEntregas] = useState<any[]>([]);
+  const [pendentes, setPendentes] = useState<any[]>([]);
+  const [corrigidas, setCorrigidas] = useState<any[]>([]);
+
   useEffect(() => {
     (async () => {
       const { data } = await supabase
@@ -19,29 +22,59 @@ function Page() {
         .select("id, status, submitted_at, nota, aluno_id, atividades(titulo)")
         .order("submitted_at", { ascending: false, nullsFirst: false });
       const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
-      setEntregas((data ?? []).map((e) => ({ ...e, profiles: profiles[e.aluno_id] ?? null })));
+      const rows = (data ?? []).map((e) => ({ ...e, profiles: profiles[e.aluno_id] ?? null }));
+      setPendentes(ordenarPorChamada(rows.filter((r) => r.status !== "corrigida")));
+      setCorrigidas(rows.filter((r) => r.status === "corrigida"));
     })();
   }, []);
+
+  const total = pendentes.length + corrigidas.length;
 
   return (
     <div className="space-y-6">
       <h2 className="font-display text-3xl">Correções</h2>
       <Card>
-        <CardHeader><CardTitle>Todas as entregas</CardTitle></CardHeader>
+        <CardHeader>
+          <CardTitle>
+            Todas as entregas {total > 0 && <span className="text-muted-foreground">({pendentes.length} pendentes)</span>}
+          </CardTitle>
+        </CardHeader>
         <CardContent>
-          {entregas.length === 0 ? (
+          {total === 0 ? (
             <p className="text-muted-foreground text-sm">Nenhuma entrega ainda.</p>
           ) : (
             <ul className="divide-y">
-              {entregas.map((e) => (
-                <li key={e.id} className="flex items-center justify-between py-2">
-                  <div>
-                    <p className="font-medium">{(e.profiles as any)?.nome_completo}</p>
-                    <p className="text-sm text-muted-foreground">{(e.atividades as any)?.titulo} · {e.status} {e.nota != null && `· nota ${e.nota}`}</p>
-                  </div>
-                  <Link to="/admin/correcoes/$id" params={{ id: e.id }}><Button size="sm">Abrir</Button></Link>
-                </li>
-              ))}
+              {[...pendentes, ...corrigidas].map((e) => {
+                const corrigida = e.status === "corrigida";
+                return (
+                  <li key={e.id} className="flex items-center justify-between gap-3 py-3">
+                    <div className="flex items-center gap-3">
+                      {corrigida ? (
+                        <CheckCircle2 className="h-5 w-5 shrink-0 text-success" strokeWidth={2} aria-label="Corrigida" />
+                      ) : (
+                        <AlertCircle className="h-5 w-5 shrink-0 text-danger" strokeWidth={2} aria-label="Pendente" />
+                      )}
+                      <div>
+                        <p className="font-medium">
+                          <span className="mr-2 text-muted-foreground tabular-nums">
+                            {e.profiles?.numero_chamada ?? "—"}
+                          </span>
+                          {e.profiles?.nome_completo}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {(e.atividades as any)?.titulo} · {corrigida ? "corrigida" : "pendente"}
+                          {e.nota != null && ` · nota ${e.nota}`}
+                        </p>
+                      </div>
+                    </div>
+                    <Link to="/admin/correcoes/$id" params={{ id: e.id }}>
+                      <Button size="sm" variant={corrigida ? "outline" : "default"}>
+                        {corrigida ? "Rever" : "Corrigir"}
+                      </Button>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           )}
         </CardContent>

@@ -15,16 +15,16 @@ export const statusLabel: Record<AtividadeStatus, string> = {
   corrigida: "Corrigida",
   entregue: "Entregue",
   encerrada: "Fora do prazo",
-  urgente: "Prazo acabando",
-  aberta: "Dentro do prazo",
+  urgente: "Pendente",
+  aberta: "Pendente",
 };
 
 export const statusClass: Record<AtividadeStatus, string> = {
-  corrigida: "bg-success-soft text-success-foreground border-success/30",
-  entregue: "bg-primary-soft text-brand-deep border-primary/30",
-  encerrada: "bg-danger-soft text-danger-foreground border-danger/30",
-  urgente: "bg-warning-soft text-warning-foreground border-warning/40",
-  aberta: "bg-muted text-muted-foreground border-border",
+  corrigida: "bg-success-soft text-success-foreground border-success/40",
+  entregue: "bg-primary-soft text-brand-deep border-primary/40",
+  encerrada: "bg-danger-soft text-danger-foreground border-danger/40",
+  urgente: "bg-warning-soft text-warning-foreground border-warning/50",
+  aberta: "bg-warning-soft text-warning-foreground border-warning/50",
 };
 
 export function StatusBadge({ status }: { status: AtividadeStatus }) {

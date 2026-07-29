@@ -1,7 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { ChevronRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { fetchProfilesMap } from "@/lib/profiles";
+import { fetchProfilesMap, ordenarPorChamada } from "@/lib/profiles";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_authenticated/admin/alunos")({
@@ -29,11 +30,13 @@ function Page() {
         (salasPorAluno[v.aluno_id] ??= []).push(nome);
       }
       setAlunos(
-        (roles ?? []).map((r) => ({
-          user_id: r.user_id,
-          profiles: profiles[r.user_id] ?? null,
-          salas: salasPorAluno[r.user_id] ?? [],
-        })),
+        ordenarPorChamada(
+          (roles ?? []).map((r) => ({
+            user_id: r.user_id,
+            profiles: profiles[r.user_id] ?? null,
+            salas: salasPorAluno[r.user_id] ?? [],
+          })),
+        ),
       );
     })();
   }, []);
@@ -49,14 +52,26 @@ function Page() {
           ) : (
             <ul className="divide-y">
               {alunos.map((a) => (
-                <li key={a.user_id} className="flex items-center justify-between py-2 text-sm">
-                  <div>
-                    <p className="font-medium">{a.profiles?.nome_completo}</p>
-                    <p className="text-muted-foreground">{a.profiles?.email}</p>
-                  </div>
-                  <div className="text-right text-muted-foreground">
-                    {a.salas.join(", ") || "—"}
-                  </div>
+                <li key={a.user_id}>
+                  <Link
+                    to="/admin/alunos/$id"
+                    params={{ id: a.user_id }}
+                    className="flex items-center justify-between gap-3 py-3 text-sm hover:bg-muted/50"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums">
+                        {a.profiles?.numero_chamada ?? "—"}
+                      </span>
+                      <div>
+                        <p className="font-medium">{a.profiles?.nome_completo}</p>
+                        <p className="text-muted-foreground">{a.profiles?.email}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 text-right text-muted-foreground">
+                      {a.salas.join(", ") || "—"}
+                      <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
+                    </div>
+                  </Link>
                 </li>
               ))}
             </ul>

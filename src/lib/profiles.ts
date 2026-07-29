@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export type ProfileLite = { nome_completo: string; email: string };
+export type ProfileLite = { nome_completo: string; email: string; numero_chamada: number | null };
 
 /**
  * As FKs de aluno_id/user_id apontam para auth.users, não para public.profiles,
@@ -13,10 +13,24 @@ export async function fetchProfilesMap(ids: (string | null | undefined)[]) {
   if (unique.length === 0) return map;
   const { data } = await supabase
     .from("profiles")
-    .select("id, nome_completo, email")
+    .select("id, nome_completo, email, numero_chamada")
     .in("id", unique);
   for (const p of data ?? []) {
-    map[p.id] = { nome_completo: p.nome_completo, email: p.email };
+    map[p.id] = {
+      nome_completo: p.nome_completo,
+      email: p.email,
+      numero_chamada: (p as any).numero_chamada ?? null,
+    };
   }
   return map;
+}
+
+export function ordenarPorChamada<T extends { profiles?: { numero_chamada?: number | null } | null }>(
+  rows: T[],
+) {
+  return [...rows].sort((a, b) => {
+    const na = a.profiles?.numero_chamada ?? Number.MAX_SAFE_INTEGER;
+    const nb = b.profiles?.numero_chamada ?? Number.MAX_SAFE_INTEGER;
+    return na - nb;
+  });
 }

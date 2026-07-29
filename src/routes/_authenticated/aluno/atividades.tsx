@@ -64,7 +64,9 @@ function Page() {
                 className="card-surface hover-lift group flex flex-col gap-4 p-5"
               >
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="font-display text-lg leading-snug">{a.titulo}</h3>
+                  <h3 className="font-serif text-xl font-semibold leading-snug text-foreground">
+                    {a.titulo?.trim() || "Atividade sem título"}
+                  </h3>
                   <StatusBadge status={status} />
                 </div>
                 <div className="space-y-1.5 text-sm text-muted-foreground">

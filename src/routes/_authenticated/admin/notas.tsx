@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { fetchProfilesMap } from "@/lib/profiles";
+import { fetchProfilesMap, ordenarPorChamada } from "@/lib/profiles";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_authenticated/admin/notas")({
@@ -19,7 +19,11 @@ function Page() {
         .eq("status", "corrigida")
         .order("corrected_at", { ascending: false });
       const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
-      setRows((data ?? []).map((r) => ({ ...r, profiles: profiles[r.aluno_id] ?? null })));
+      setRows(
+        ordenarPorChamada(
+          (data ?? []).map((r) => ({ ...r, profiles: profiles[r.aluno_id] ?? null })),
+        ),
+      );
     })();
   }, []);
 
@@ -34,12 +38,13 @@ function Page() {
           ) : (
             <table className="w-full text-sm">
               <thead className="text-left text-muted-foreground">
-                <tr><th className="py-2">Aluno</th><th>Atividade</th><th>Nota</th><th>Data</th></tr>
+                <tr><th className="py-2">Nº</th><th>Aluno</th><th>Atividade</th><th>Nota</th><th>Data</th></tr>
               </thead>
               <tbody className="divide-y">
                 {rows.map((r) => (
                   <tr key={r.id}>
-                    <td className="py-2">{(r.profiles as any)?.nome_completo}</td>
+                    <td className="py-2 tabular-nums text-muted-foreground">{r.profiles?.numero_chamada ?? "—"}</td>
+                    <td>{r.profiles?.nome_completo}</td>
                     <td>{(r.atividades as any)?.titulo}</td>
                     <td className="font-semibold">{r.nota ?? "—"}</td>
                     <td className="text-muted-foreground">{r.corrected_at ? new Date(r.corrected_at).toLocaleDateString() : "—"}</td>

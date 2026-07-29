@@ -32,6 +32,7 @@ import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAlunoAtividadesIdRouteImport } from './routes/_authenticated/aluno/atividades_.$id'
 import { Route as AuthenticatedAdminSalasIdRouteImport } from './routes/_authenticated/admin/salas_.$id'
 import { Route as AuthenticatedAdminCorrecoesIdRouteImport } from './routes/_authenticated/admin/correcoes_.$id'
+import { Route as AuthenticatedAdminAlunosIdRouteImport } from './routes/_authenticated/admin/alunos_.$id'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -160,6 +161,12 @@ const AuthenticatedAdminCorrecoesIdRoute =
     path: '/correcoes/$id',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminAlunosIdRoute =
+  AuthenticatedAdminAlunosIdRouteImport.update({
+    id: '/alunos_/$id',
+    path: '/alunos/$id',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByFullPath {
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
+  '/admin/alunos/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
   '/admin/salas/$id': typeof AuthenticatedAdminSalasIdRoute
   '/aluno/atividades/$id': typeof AuthenticatedAlunoAtividadesIdRoute
@@ -205,6 +213,7 @@ export interface FileRoutesByTo {
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
+  '/admin/alunos/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
   '/admin/salas/$id': typeof AuthenticatedAdminSalasIdRoute
   '/aluno/atividades/$id': typeof AuthenticatedAlunoAtividadesIdRoute
@@ -231,6 +240,7 @@ export interface FileRoutesById {
   '/_authenticated/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/_authenticated/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
+  '/_authenticated/admin/alunos_/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/_authenticated/admin/correcoes_/$id': typeof AuthenticatedAdminCorrecoesIdRoute
   '/_authenticated/admin/salas_/$id': typeof AuthenticatedAdminSalasIdRoute
   '/_authenticated/aluno/atividades_/$id': typeof AuthenticatedAlunoAtividadesIdRoute
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
     | '/aluno/entregas'
     | '/aluno/perfil'
     | '/api/public/valida-codigo-sala'
+    | '/admin/alunos/$id'
     | '/admin/correcoes/$id'
     | '/admin/salas/$id'
     | '/aluno/atividades/$id'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/aluno/entregas'
     | '/aluno/perfil'
     | '/api/public/valida-codigo-sala'
+    | '/admin/alunos/$id'
     | '/admin/correcoes/$id'
     | '/admin/salas/$id'
     | '/aluno/atividades/$id'
@@ -306,6 +318,7 @@ export interface FileRouteTypes {
     | '/_authenticated/aluno/entregas'
     | '/_authenticated/aluno/perfil'
     | '/api/public/valida-codigo-sala'
+    | '/_authenticated/admin/alunos_/$id'
     | '/_authenticated/admin/correcoes_/$id'
     | '/_authenticated/admin/salas_/$id'
     | '/_authenticated/aluno/atividades_/$id'
@@ -484,6 +497,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCorrecoesIdRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/alunos_/$id': {
+      id: '/_authenticated/admin/alunos_/$id'
+      path: '/alunos/$id'
+      fullPath: '/admin/alunos/$id'
+      preLoaderRoute: typeof AuthenticatedAdminAlunosIdRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
   }
 }
 
@@ -495,6 +515,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedAdminNotasRoute: typeof AuthenticatedAdminNotasRoute
   AuthenticatedAdminSalasRoute: typeof AuthenticatedAdminSalasRoute
+  AuthenticatedAdminAlunosIdRoute: typeof AuthenticatedAdminAlunosIdRoute
   AuthenticatedAdminCorrecoesIdRoute: typeof AuthenticatedAdminCorrecoesIdRoute
   AuthenticatedAdminSalasIdRoute: typeof AuthenticatedAdminSalasIdRoute
 }
@@ -508,6 +529,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
     AuthenticatedAdminNotasRoute: AuthenticatedAdminNotasRoute,
     AuthenticatedAdminSalasRoute: AuthenticatedAdminSalasRoute,
+    AuthenticatedAdminAlunosIdRoute: AuthenticatedAdminAlunosIdRoute,
     AuthenticatedAdminCorrecoesIdRoute: AuthenticatedAdminCorrecoesIdRoute,
     AuthenticatedAdminSalasIdRoute: AuthenticatedAdminSalasIdRoute,
   }
