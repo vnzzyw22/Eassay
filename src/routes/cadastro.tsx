@@ -47,7 +47,7 @@ function CadastroPage() {
         password: senha,
         options: {
           emailRedirectTo: `${window.location.origin}/auth`,
-          data: { nome_completo: nome },
+          data: { nome_completo: nome, numero_chamada: Number(numeroChamada) },
         },
       });
       if (error) {
@@ -69,7 +69,9 @@ function CadastroPage() {
 
       // 3. vincula aluno à sala (perfil + papel + vínculo), no servidor
       try {
-        await matricular({ data: { codigo: codigo.trim().toUpperCase() } });
+        await matricular({
+          data: { codigo: codigo.trim().toUpperCase(), numero_chamada: Number(numeroChamada) },
+        });
         localStorage.removeItem("eassay_codigo_sala");
       } catch (err: any) {
         toast.error(
@@ -101,6 +103,19 @@ function CadastroPage() {
             <div>
               <Label htmlFor="nome">Nome completo</Label>
               <Input id="nome" required value={nome} onChange={(e) => setNome(e.target.value)} />
+            </div>
+            <div>
+              <Label htmlFor="numero-chamada">Número de chamada</Label>
+              <Input
+                id="numero-chamada"
+                type="number"
+                min={1}
+                step={1}
+                required
+                placeholder="Ex: 12"
+                value={numeroChamada}
+                onChange={(e) => setNumeroChamada(e.target.value)}
+              />
             </div>
             <div>
               <Label htmlFor="email">Email</Label>
