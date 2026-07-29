@@ -26,7 +26,7 @@ export const matricularAluno = createServerFn({ method: "POST" })
       (claims.user_metadata?.full_name as string) ||
       email;
     const numeroChamada =
-      data.numero_chamada ?? Number(claims.user_metadata?.numero_chamada) || null;
+      data.numero_chamada ?? (Number(claims.user_metadata?.numero_chamada) || null);
 
     const { data: sala, error: salaErr } = await supabaseAdmin
       .from("salas")
