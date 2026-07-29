@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProfilesMap } from "@/lib/profiles";
+import { CATEGORIAS, LegendaCores, TextoMarcavel, type Categoria, type Marcacao } from "@/lib/marcacoes";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,8 @@ function Page() {
   const [nota, setNota] = useState<string>("");
   const [comentario, setComentario] = useState("");
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [marcacoes, setMarcacoes] = useState<Marcacao[]>([]);
+  const [categoria, setCategoria] = useState<Categoria>("ortografia");
 
   useEffect(() => {
     (async () => {
@@ -33,6 +36,7 @@ function Page() {
 
       setNota(data?.nota != null ? String(data.nota) : "");
       setComentario(data?.comentario ?? "");
+      setMarcacoes(Array.isArray((data as any)?.marcacoes) ? ((data as any).marcacoes as Marcacao[]) : []);
       if (data?.arquivo_url) {
         const { data: signed } = await supabase.storage.from("entregas").createSignedUrl(data.arquivo_url, 3600);
         setDownloadUrl(signed?.signedUrl ?? null);
@@ -40,15 +44,30 @@ function Page() {
     })();
   }, [id]);
 
+  const marcar = (start: number, end: number) => {
+    setMarcacoes((m) => [...m, { start, end, cat: categoria }]);
+    window.getSelection()?.removeAllRanges();
+  };
+
+  const salvarMarcacoes = async (lista: Marcacao[]) => {
+    const { error } = await supabase
+      .from("entregas")
+      .update({ marcacoes: lista } as any)
+      .eq("id", id);
+    if (error) toast.error(error.message);
+    else toast.success("Marcações salvas.");
+  };
+
   const salvar = async () => {
     const { error } = await supabase
       .from("entregas")
       .update({
         nota: nota === "" ? null : Number(nota),
         comentario,
+        marcacoes,
         status: "corrigida",
         corrected_at: new Date().toISOString(),
-      })
+      } as any)
       .eq("id", id);
     if (error) toast.error(error.message);
     else toast.success("Correção salva.");
@@ -59,16 +78,58 @@ function Page() {
     <div className="mx-auto max-w-3xl space-y-6">
       <Link to="/admin/correcoes" className="text-sm text-muted-foreground hover:underline">← Correções</Link>
       <div>
-        <h2 className="font-display text-3xl">{(entrega.atividades as any)?.titulo}</h2>
+        <h2 className="font-serif text-3xl font-semibold">{(entrega.atividades as any)?.titulo}</h2>
         <p className="text-muted-foreground">
-          {(entrega.profiles as any)?.nome_completo} · enviado em{" "}
+          {entrega.profiles?.numero_chamada != null && `Nº ${entrega.profiles.numero_chamada} · `}
+          {entrega.profiles?.nome_completo} · enviado em{" "}
           {entrega.submitted_at ? new Date(entrega.submitted_at).toLocaleString() : "—"}
         </p>
       </div>
       <Card>
         <CardHeader><CardTitle>Entrega</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {entrega.texto && <div className="whitespace-pre-wrap rounded border bg-muted/30 p-4 text-sm">{entrega.texto}</div>}
+          {entrega.texto && (
+            <>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-sm text-muted-foreground">Marcar seleção como:</span>
+                {CATEGORIAS.map((c) => (
+                  <Button
+                    key={c.id}
+                    type="button"
+                    size="sm"
+                    variant={categoria === c.id ? "default" : "outline"}
+                    onClick={() => setCategoria(c.id)}
+                  >
+                    <span className={`mr-2 h-2.5 w-2.5 rounded-full ${c.ponto}`} />
+                    {c.label}
+                  </Button>
+                ))}
+              </div>
+              <TextoMarcavel texto={entrega.texto} marcacoes={marcacoes} onSelecionar={marcar} />
+              <LegendaCores />
+              <div className="flex flex-wrap gap-2">
+                <Button size="sm" variant="outline" onClick={() => salvarMarcacoes(marcacoes)}>
+                  Salvar marcações
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setMarcacoes((m) => m.slice(0, -1))}
+                  disabled={marcacoes.length === 0}
+                >
+                  Desfazer última
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setMarcacoes([])}
+                  disabled={marcacoes.length === 0}
+                >
+                  Limpar todas
+                </Button>
+              </div>
+            </>
+          )}
           {downloadUrl && <a href={downloadUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline text-sm">Baixar arquivo enviado</a>}
           {!entrega.texto && !downloadUrl && <p className="text-muted-foreground text-sm">Sem conteúdo enviado.</p>}
         </CardContent>
