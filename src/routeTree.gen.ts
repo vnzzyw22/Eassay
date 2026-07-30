@@ -24,6 +24,7 @@ import { Route as AuthenticatedAlunoEntregasRouteImport } from './routes/_authen
 import { Route as AuthenticatedAlunoDashboardRouteImport } from './routes/_authenticated/aluno/dashboard'
 import { Route as AuthenticatedAlunoAtividadesRouteImport } from './routes/_authenticated/aluno/atividades'
 import { Route as AuthenticatedAdminSalasRouteImport } from './routes/_authenticated/admin/salas'
+import { Route as AuthenticatedAdminRankingRouteImport } from './routes/_authenticated/admin/ranking'
 import { Route as AuthenticatedAdminNotasRouteImport } from './routes/_authenticated/admin/notas'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
 import { Route as AuthenticatedAdminCorrecoesRouteImport } from './routes/_authenticated/admin/correcoes'
@@ -115,6 +116,12 @@ const AuthenticatedAdminSalasRoute = AuthenticatedAdminSalasRouteImport.update({
   path: '/salas',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminRankingRoute =
+  AuthenticatedAdminRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminNotasRoute = AuthenticatedAdminNotasRouteImport.update({
   id: '/notas',
   path: '/notas',
@@ -189,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/notas': typeof AuthenticatedAdminNotasRoute
+  '/admin/ranking': typeof AuthenticatedAdminRankingRoute
   '/admin/salas': typeof AuthenticatedAdminSalasRoute
   '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
@@ -215,6 +223,7 @@ export interface FileRoutesByTo {
   '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/notas': typeof AuthenticatedAdminNotasRoute
+  '/admin/ranking': typeof AuthenticatedAdminRankingRoute
   '/admin/salas': typeof AuthenticatedAdminSalasRoute
   '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
@@ -243,6 +252,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/notas': typeof AuthenticatedAdminNotasRoute
+  '/_authenticated/admin/ranking': typeof AuthenticatedAdminRankingRoute
   '/_authenticated/admin/salas': typeof AuthenticatedAdminSalasRoute
   '/_authenticated/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/_authenticated/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/admin/correcoes'
     | '/admin/dashboard'
     | '/admin/notas'
+    | '/admin/ranking'
     | '/admin/salas'
     | '/aluno/atividades'
     | '/aluno/dashboard'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/admin/correcoes'
     | '/admin/dashboard'
     | '/admin/notas'
+    | '/admin/ranking'
     | '/admin/salas'
     | '/aluno/atividades'
     | '/aluno/dashboard'
@@ -324,6 +336,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/correcoes'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/notas'
+    | '/_authenticated/admin/ranking'
     | '/_authenticated/admin/salas'
     | '/_authenticated/aluno/atividades'
     | '/_authenticated/aluno/dashboard'
@@ -454,6 +467,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSalasRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/ranking': {
+      id: '/_authenticated/admin/ranking'
+      path: '/ranking'
+      fullPath: '/admin/ranking'
+      preLoaderRoute: typeof AuthenticatedAdminRankingRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/notas': {
       id: '/_authenticated/admin/notas'
       path: '/notas'
@@ -534,6 +554,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminCorrecoesRoute: typeof AuthenticatedAdminCorrecoesRoute
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedAdminNotasRoute: typeof AuthenticatedAdminNotasRoute
+  AuthenticatedAdminRankingRoute: typeof AuthenticatedAdminRankingRoute
   AuthenticatedAdminSalasRoute: typeof AuthenticatedAdminSalasRoute
   AuthenticatedAdminAlunosIdRoute: typeof AuthenticatedAdminAlunosIdRoute
   AuthenticatedAdminCorrecoesIdRoute: typeof AuthenticatedAdminCorrecoesIdRoute
@@ -548,6 +569,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminCorrecoesRoute: AuthenticatedAdminCorrecoesRoute,
     AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
     AuthenticatedAdminNotasRoute: AuthenticatedAdminNotasRoute,
+    AuthenticatedAdminRankingRoute: AuthenticatedAdminRankingRoute,
     AuthenticatedAdminSalasRoute: AuthenticatedAdminSalasRoute,
     AuthenticatedAdminAlunosIdRoute: AuthenticatedAdminAlunosIdRoute,
     AuthenticatedAdminCorrecoesIdRoute: AuthenticatedAdminCorrecoesIdRoute,
