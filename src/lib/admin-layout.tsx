@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, School, Users, FileText, CheckSquare, Award, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, School, Users, FileText, CheckSquare, Award, Trophy, Settings, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Brand } from "@/lib/brand";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,8 +12,10 @@ const items = [
   { to: "/admin/atividades", label: "Atividades", icon: FileText },
   { to: "/admin/correcoes", label: "Correções", icon: CheckSquare },
   { to: "/admin/notas", label: "Notas", icon: Award },
+  { to: "/admin/ranking", label: "Ranking", icon: Trophy },
   { to: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ] as const;
+
 
 export function AdminLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (r) => r.location.pathname });
