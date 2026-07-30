@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { BookOpen, History, User, LogOut } from "lucide-react";
+import { BookOpen, History, Trophy, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { Brand } from "@/lib/brand";
@@ -8,8 +8,10 @@ import type { ReactNode } from "react";
 const items = [
   { to: "/aluno/atividades", label: "Minhas atividades", icon: BookOpen },
   { to: "/aluno/entregas", label: "Histórico", icon: History },
+  { to: "/aluno/ranking", label: "Ranking", icon: Trophy },
   { to: "/aluno/perfil", label: "Perfil", icon: User },
 ] as const;
+
 
 export function AlunoLayout({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (r) => r.location.pathname });

@@ -18,11 +18,13 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAlunoRouteRouteImport } from './routes/_authenticated/aluno/route'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as ApiPublicValidaCodigoSalaRouteImport } from './routes/api/public/valida-codigo-sala'
+import { Route as AuthenticatedAlunoRankingRouteImport } from './routes/_authenticated/aluno/ranking'
 import { Route as AuthenticatedAlunoPerfilRouteImport } from './routes/_authenticated/aluno/perfil'
 import { Route as AuthenticatedAlunoEntregasRouteImport } from './routes/_authenticated/aluno/entregas'
 import { Route as AuthenticatedAlunoDashboardRouteImport } from './routes/_authenticated/aluno/dashboard'
 import { Route as AuthenticatedAlunoAtividadesRouteImport } from './routes/_authenticated/aluno/atividades'
 import { Route as AuthenticatedAdminSalasRouteImport } from './routes/_authenticated/admin/salas'
+import { Route as AuthenticatedAdminRankingRouteImport } from './routes/_authenticated/admin/ranking'
 import { Route as AuthenticatedAdminNotasRouteImport } from './routes/_authenticated/admin/notas'
 import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
 import { Route as AuthenticatedAdminCorrecoesRouteImport } from './routes/_authenticated/admin/correcoes'
@@ -79,6 +81,12 @@ const ApiPublicValidaCodigoSalaRoute =
     path: '/api/public/valida-codigo-sala',
     getParentRoute: () => rootRouteImport,
   } as any)
+const AuthenticatedAlunoRankingRoute =
+  AuthenticatedAlunoRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
+  } as any)
 const AuthenticatedAlunoPerfilRoute =
   AuthenticatedAlunoPerfilRouteImport.update({
     id: '/perfil',
@@ -108,6 +116,12 @@ const AuthenticatedAdminSalasRoute = AuthenticatedAdminSalasRouteImport.update({
   path: '/salas',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedAdminRankingRoute =
+  AuthenticatedAdminRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminNotasRoute = AuthenticatedAdminNotasRouteImport.update({
   id: '/notas',
   path: '/notas',
@@ -182,11 +196,13 @@ export interface FileRoutesByFullPath {
   '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/notas': typeof AuthenticatedAdminNotasRoute
+  '/admin/ranking': typeof AuthenticatedAdminRankingRoute
   '/admin/salas': typeof AuthenticatedAdminSalasRoute
   '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
+  '/aluno/ranking': typeof AuthenticatedAlunoRankingRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
   '/admin/alunos/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
@@ -207,11 +223,13 @@ export interface FileRoutesByTo {
   '/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/admin/notas': typeof AuthenticatedAdminNotasRoute
+  '/admin/ranking': typeof AuthenticatedAdminRankingRoute
   '/admin/salas': typeof AuthenticatedAdminSalasRoute
   '/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
+  '/aluno/ranking': typeof AuthenticatedAlunoRankingRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
   '/admin/alunos/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
@@ -234,11 +252,13 @@ export interface FileRoutesById {
   '/_authenticated/admin/correcoes': typeof AuthenticatedAdminCorrecoesRoute
   '/_authenticated/admin/dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/admin/notas': typeof AuthenticatedAdminNotasRoute
+  '/_authenticated/admin/ranking': typeof AuthenticatedAdminRankingRoute
   '/_authenticated/admin/salas': typeof AuthenticatedAdminSalasRoute
   '/_authenticated/aluno/atividades': typeof AuthenticatedAlunoAtividadesRoute
   '/_authenticated/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/_authenticated/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/_authenticated/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
+  '/_authenticated/aluno/ranking': typeof AuthenticatedAlunoRankingRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
   '/_authenticated/admin/alunos_/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/_authenticated/admin/correcoes_/$id': typeof AuthenticatedAdminCorrecoesIdRoute
@@ -261,11 +281,13 @@ export interface FileRouteTypes {
     | '/admin/correcoes'
     | '/admin/dashboard'
     | '/admin/notas'
+    | '/admin/ranking'
     | '/admin/salas'
     | '/aluno/atividades'
     | '/aluno/dashboard'
     | '/aluno/entregas'
     | '/aluno/perfil'
+    | '/aluno/ranking'
     | '/api/public/valida-codigo-sala'
     | '/admin/alunos/$id'
     | '/admin/correcoes/$id'
@@ -286,11 +308,13 @@ export interface FileRouteTypes {
     | '/admin/correcoes'
     | '/admin/dashboard'
     | '/admin/notas'
+    | '/admin/ranking'
     | '/admin/salas'
     | '/aluno/atividades'
     | '/aluno/dashboard'
     | '/aluno/entregas'
     | '/aluno/perfil'
+    | '/aluno/ranking'
     | '/api/public/valida-codigo-sala'
     | '/admin/alunos/$id'
     | '/admin/correcoes/$id'
@@ -312,11 +336,13 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/correcoes'
     | '/_authenticated/admin/dashboard'
     | '/_authenticated/admin/notas'
+    | '/_authenticated/admin/ranking'
     | '/_authenticated/admin/salas'
     | '/_authenticated/aluno/atividades'
     | '/_authenticated/aluno/dashboard'
     | '/_authenticated/aluno/entregas'
     | '/_authenticated/aluno/perfil'
+    | '/_authenticated/aluno/ranking'
     | '/api/public/valida-codigo-sala'
     | '/_authenticated/admin/alunos_/$id'
     | '/_authenticated/admin/correcoes_/$id'
@@ -399,6 +425,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicValidaCodigoSalaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/aluno/ranking': {
+      id: '/_authenticated/aluno/ranking'
+      path: '/ranking'
+      fullPath: '/aluno/ranking'
+      preLoaderRoute: typeof AuthenticatedAlunoRankingRouteImport
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
+    }
     '/_authenticated/aluno/perfil': {
       id: '/_authenticated/aluno/perfil'
       path: '/perfil'
@@ -432,6 +465,13 @@ declare module '@tanstack/react-router' {
       path: '/salas'
       fullPath: '/admin/salas'
       preLoaderRoute: typeof AuthenticatedAdminSalasRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/ranking': {
+      id: '/_authenticated/admin/ranking'
+      path: '/ranking'
+      fullPath: '/admin/ranking'
+      preLoaderRoute: typeof AuthenticatedAdminRankingRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/notas': {
@@ -514,6 +554,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminCorrecoesRoute: typeof AuthenticatedAdminCorrecoesRoute
   AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedAdminNotasRoute: typeof AuthenticatedAdminNotasRoute
+  AuthenticatedAdminRankingRoute: typeof AuthenticatedAdminRankingRoute
   AuthenticatedAdminSalasRoute: typeof AuthenticatedAdminSalasRoute
   AuthenticatedAdminAlunosIdRoute: typeof AuthenticatedAdminAlunosIdRoute
   AuthenticatedAdminCorrecoesIdRoute: typeof AuthenticatedAdminCorrecoesIdRoute
@@ -528,6 +569,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminCorrecoesRoute: AuthenticatedAdminCorrecoesRoute,
     AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
     AuthenticatedAdminNotasRoute: AuthenticatedAdminNotasRoute,
+    AuthenticatedAdminRankingRoute: AuthenticatedAdminRankingRoute,
     AuthenticatedAdminSalasRoute: AuthenticatedAdminSalasRoute,
     AuthenticatedAdminAlunosIdRoute: AuthenticatedAdminAlunosIdRoute,
     AuthenticatedAdminCorrecoesIdRoute: AuthenticatedAdminCorrecoesIdRoute,
@@ -544,6 +586,7 @@ interface AuthenticatedAlunoRouteRouteChildren {
   AuthenticatedAlunoDashboardRoute: typeof AuthenticatedAlunoDashboardRoute
   AuthenticatedAlunoEntregasRoute: typeof AuthenticatedAlunoEntregasRoute
   AuthenticatedAlunoPerfilRoute: typeof AuthenticatedAlunoPerfilRoute
+  AuthenticatedAlunoRankingRoute: typeof AuthenticatedAlunoRankingRoute
   AuthenticatedAlunoAtividadesIdRoute: typeof AuthenticatedAlunoAtividadesIdRoute
 }
 
@@ -553,6 +596,7 @@ const AuthenticatedAlunoRouteRouteChildren: AuthenticatedAlunoRouteRouteChildren
     AuthenticatedAlunoDashboardRoute: AuthenticatedAlunoDashboardRoute,
     AuthenticatedAlunoEntregasRoute: AuthenticatedAlunoEntregasRoute,
     AuthenticatedAlunoPerfilRoute: AuthenticatedAlunoPerfilRoute,
+    AuthenticatedAlunoRankingRoute: AuthenticatedAlunoRankingRoute,
     AuthenticatedAlunoAtividadesIdRoute: AuthenticatedAlunoAtividadesIdRoute,
   }
 

@@ -237,6 +237,17 @@ export type Database = {
         }
         Returns: boolean
       }
+      ranking_minha_sala: {
+        Args: never
+        Returns: {
+          aluno_id: string
+          media: number
+          nome_completo: string
+          sala_id: string
+          sala_nome: string
+          total_corrigidas: number
+        }[]
+      }
     }
     Enums: {
       app_role: "admin" | "aluno"
