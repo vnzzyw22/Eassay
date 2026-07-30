@@ -70,6 +70,11 @@
   --color-danger-soft: var(--danger-soft);
   --color-brand-deep: var(--brand-deep);
   --color-primary-soft: var(--primary-soft);
+  --color-login-paper: var(--login-paper);
+  --color-login-ink: var(--login-ink);
+  --color-login-accent: var(--login-accent);
+  --color-login-accent-foreground: var(--login-accent-foreground);
+  --color-login-muted: var(--login-muted);
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
@@ -86,8 +91,14 @@
   --primary-foreground: oklch(1 0 0);
   --primary-soft: oklch(0.9556 0.0257 259.81);
   --brand-deep: oklch(0.4244 0.181 265.64);
+  --login-paper: oklch(0.982 0.004 91.62);
+  --login-ink: oklch(0.2795 0.0369 260.04);
+  --login-accent: oklch(0.5461 0.2153 262.89);
+  --login-accent-foreground: oklch(1 0 0);
+  --login-muted: oklch(0.5084 0.0213 86.18);
   --secondary: oklch(0.9683 0.0069 247.9);
   --secondary-foreground: oklch(0.2077 0.0398 265.75);
+
   --muted: oklch(0.9683 0.0069 247.9);
   --muted-foreground: oklch(0.5513 0.0234 264.36);
   --accent: oklch(0.9556 0.0257 259.81);
