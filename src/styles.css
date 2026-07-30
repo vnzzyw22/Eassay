@@ -70,6 +70,11 @@
   --color-danger-soft: var(--danger-soft);
   --color-brand-deep: var(--brand-deep);
   --color-primary-soft: var(--primary-soft);
+  --color-login-paper: var(--login-paper);
+  --color-login-ink: var(--login-ink);
+  --color-login-accent: var(--login-accent);
+  --color-login-accent-foreground: var(--login-accent-foreground);
+  --color-login-muted: var(--login-muted);
   --font-serif: "Playfair Display", Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
