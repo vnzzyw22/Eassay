@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedAlunoRouteRouteImport } from './routes/_authenticated/aluno/route'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as ApiPublicValidaCodigoSalaRouteImport } from './routes/api/public/valida-codigo-sala'
+import { Route as AuthenticatedAlunoRankingRouteImport } from './routes/_authenticated/aluno/ranking'
 import { Route as AuthenticatedAlunoPerfilRouteImport } from './routes/_authenticated/aluno/perfil'
 import { Route as AuthenticatedAlunoEntregasRouteImport } from './routes/_authenticated/aluno/entregas'
 import { Route as AuthenticatedAlunoDashboardRouteImport } from './routes/_authenticated/aluno/dashboard'
@@ -78,6 +79,12 @@ const ApiPublicValidaCodigoSalaRoute =
     id: '/api/public/valida-codigo-sala',
     path: '/api/public/valida-codigo-sala',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAlunoRankingRoute =
+  AuthenticatedAlunoRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
   } as any)
 const AuthenticatedAlunoPerfilRoute =
   AuthenticatedAlunoPerfilRouteImport.update({
@@ -187,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
+  '/aluno/ranking': typeof AuthenticatedAlunoRankingRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
   '/admin/alunos/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
@@ -212,6 +220,7 @@ export interface FileRoutesByTo {
   '/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
+  '/aluno/ranking': typeof AuthenticatedAlunoRankingRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
   '/admin/alunos/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/admin/correcoes/$id': typeof AuthenticatedAdminCorrecoesIdRoute
@@ -239,6 +248,7 @@ export interface FileRoutesById {
   '/_authenticated/aluno/dashboard': typeof AuthenticatedAlunoDashboardRoute
   '/_authenticated/aluno/entregas': typeof AuthenticatedAlunoEntregasRoute
   '/_authenticated/aluno/perfil': typeof AuthenticatedAlunoPerfilRoute
+  '/_authenticated/aluno/ranking': typeof AuthenticatedAlunoRankingRoute
   '/api/public/valida-codigo-sala': typeof ApiPublicValidaCodigoSalaRoute
   '/_authenticated/admin/alunos_/$id': typeof AuthenticatedAdminAlunosIdRoute
   '/_authenticated/admin/correcoes_/$id': typeof AuthenticatedAdminCorrecoesIdRoute
@@ -266,6 +276,7 @@ export interface FileRouteTypes {
     | '/aluno/dashboard'
     | '/aluno/entregas'
     | '/aluno/perfil'
+    | '/aluno/ranking'
     | '/api/public/valida-codigo-sala'
     | '/admin/alunos/$id'
     | '/admin/correcoes/$id'
@@ -291,6 +302,7 @@ export interface FileRouteTypes {
     | '/aluno/dashboard'
     | '/aluno/entregas'
     | '/aluno/perfil'
+    | '/aluno/ranking'
     | '/api/public/valida-codigo-sala'
     | '/admin/alunos/$id'
     | '/admin/correcoes/$id'
@@ -317,6 +329,7 @@ export interface FileRouteTypes {
     | '/_authenticated/aluno/dashboard'
     | '/_authenticated/aluno/entregas'
     | '/_authenticated/aluno/perfil'
+    | '/_authenticated/aluno/ranking'
     | '/api/public/valida-codigo-sala'
     | '/_authenticated/admin/alunos_/$id'
     | '/_authenticated/admin/correcoes_/$id'
@@ -398,6 +411,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/public/valida-codigo-sala'
       preLoaderRoute: typeof ApiPublicValidaCodigoSalaRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/aluno/ranking': {
+      id: '/_authenticated/aluno/ranking'
+      path: '/ranking'
+      fullPath: '/aluno/ranking'
+      preLoaderRoute: typeof AuthenticatedAlunoRankingRouteImport
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
     }
     '/_authenticated/aluno/perfil': {
       id: '/_authenticated/aluno/perfil'
@@ -544,6 +564,7 @@ interface AuthenticatedAlunoRouteRouteChildren {
   AuthenticatedAlunoDashboardRoute: typeof AuthenticatedAlunoDashboardRoute
   AuthenticatedAlunoEntregasRoute: typeof AuthenticatedAlunoEntregasRoute
   AuthenticatedAlunoPerfilRoute: typeof AuthenticatedAlunoPerfilRoute
+  AuthenticatedAlunoRankingRoute: typeof AuthenticatedAlunoRankingRoute
   AuthenticatedAlunoAtividadesIdRoute: typeof AuthenticatedAlunoAtividadesIdRoute
 }
 
@@ -553,6 +574,7 @@ const AuthenticatedAlunoRouteRouteChildren: AuthenticatedAlunoRouteRouteChildren
     AuthenticatedAlunoDashboardRoute: AuthenticatedAlunoDashboardRoute,
     AuthenticatedAlunoEntregasRoute: AuthenticatedAlunoEntregasRoute,
     AuthenticatedAlunoPerfilRoute: AuthenticatedAlunoPerfilRoute,
+    AuthenticatedAlunoRankingRoute: AuthenticatedAlunoRankingRoute,
     AuthenticatedAlunoAtividadesIdRoute: AuthenticatedAlunoAtividadesIdRoute,
   }
 
@@ -586,13 +608,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
