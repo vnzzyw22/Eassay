@@ -39,11 +39,14 @@ function Page() {
   const [file, setFile] = useState<File | null>(null);
   const [publicar, setPublicar] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [filtroSala, setFiltroSala] = useState<string>("todas");
+  const [aExcluir, setAExcluir] = useState<any | null>(null);
+  const [excluindo, setExcluindo] = useState(false);
 
   const load = async () => {
     const { data } = await supabase
       .from("atividades")
-      .select("*, atividades_salas(salas(nome))")
+      .select("*, atividades_salas(sala_id, salas(nome))")
       .order("created_at", { ascending: false });
     setAtivs(data ?? []);
   };
