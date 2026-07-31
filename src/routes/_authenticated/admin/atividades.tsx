@@ -8,6 +8,17 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin/atividades")({
@@ -28,11 +39,14 @@ function Page() {
   const [file, setFile] = useState<File | null>(null);
   const [publicar, setPublicar] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [filtroSala, setFiltroSala] = useState<string>("todas");
+  const [aExcluir, setAExcluir] = useState<any | null>(null);
+  const [excluindo, setExcluindo] = useState(false);
 
   const load = async () => {
     const { data } = await supabase
       .from("atividades")
-      .select("*, atividades_salas(salas(nome))")
+      .select("*, atividades_salas(sala_id, salas(nome))")
       .order("created_at", { ascending: false });
     setAtivs(data ?? []);
   };
@@ -97,6 +111,29 @@ function Page() {
     if (error) toast.error(error.message); else load();
   };
 
+  const excluir = async () => {
+    if (!aExcluir) return;
+    setExcluindo(true);
+    const id = aExcluir.id;
+    const e1 = await supabase.from("entregas").delete().eq("atividade_id", id);
+    if (e1.error) { toast.error(e1.error.message); setExcluindo(false); return; }
+    const e2 = await supabase.from("atividades_salas").delete().eq("atividade_id", id);
+    if (e2.error) { toast.error(e2.error.message); setExcluindo(false); return; }
+    const e3 = await supabase.from("atividades").delete().eq("id", id);
+    if (e3.error) { toast.error(e3.error.message); setExcluindo(false); return; }
+    toast.success("Atividade excluída.");
+    setExcluindo(false);
+    setAExcluir(null);
+    load();
+  };
+
+  const visiveis =
+    filtroSala === "todas"
+      ? ativs
+      : ativs.filter(
+          (a) => a.publicada && a.atividades_salas?.some((x: any) => x.sala_id === filtroSala),
+        );
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -137,8 +174,22 @@ function Page() {
           </DialogContent>
         </Dialog>
       </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <Label className="text-sm text-muted-foreground">Filtrar por sala</Label>
+        <Select value={filtroSala} onValueChange={setFiltroSala}>
+          <SelectTrigger className="w-64"><SelectValue placeholder="Todas as salas" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todas">Todas as salas</SelectItem>
+            {salas.map((s) => (
+              <SelectItem key={s.id} value={s.id}>{s.nome}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid gap-4">
-        {ativs.map((a) => {
+        {visiveis.map((a) => {
           const encerrada = new Date(a.prazo) < new Date();
           return (
             <Card key={a.id}>
@@ -156,15 +207,42 @@ function Page() {
                   Salas: {a.atividades_salas?.map((x: any) => x.salas?.nome).filter(Boolean).join(", ") || "nenhuma"}
                 </p>
                 <p className="text-muted-foreground">Status: {a.publicada ? "publicada" : "rascunho"}</p>
-                <Button size="sm" variant="outline" onClick={() => togglePublish(a)}>
-                  {a.publicada ? "Despublicar" : "Publicar"}
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" variant="outline" onClick={() => togglePublish(a)}>
+                    {a.publicada ? "Despublicar" : "Publicar"}
+                  </Button>
+                  <Button size="sm" variant="destructive" onClick={() => setAExcluir(a)}>
+                    Excluir
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           );
         })}
-        {ativs.length === 0 && <p className="text-muted-foreground">Nenhuma atividade criada.</p>}
+        {visiveis.length === 0 && (
+          <p className="text-muted-foreground">
+            {ativs.length === 0 ? "Nenhuma atividade criada." : "Nenhuma atividade para esta sala."}
+          </p>
+        )}
       </div>
+
+      <AlertDialog open={!!aExcluir} onOpenChange={(o) => !o && setAExcluir(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Excluir “{aExcluir?.titulo}” também remove os vínculos com as salas e todas as entregas
+              (textos, notas e comentários) dessa atividade. Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={excluindo}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={(e) => { e.preventDefault(); excluir(); }} disabled={excluindo}>
+              {excluindo ? "Excluindo..." : "Excluir"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
