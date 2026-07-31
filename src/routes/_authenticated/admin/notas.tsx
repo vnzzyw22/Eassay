@@ -62,7 +62,11 @@ function Page() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display min-w-0 text-2xl sm:text-3xl">Notas</h2>
+      </div>
+      <div className="hidden">
+
         <h2 className="font-display text-3xl">Notas</h2>
         <Button onClick={exportar} disabled={rows.length === 0}>
           <Download className="mr-2 h-4 w-4" strokeWidth={1.75} /> Exportar para Excel
