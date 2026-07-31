@@ -111,6 +111,29 @@ function Page() {
     if (error) toast.error(error.message); else load();
   };
 
+  const excluir = async () => {
+    if (!aExcluir) return;
+    setExcluindo(true);
+    const id = aExcluir.id;
+    const e1 = await supabase.from("entregas").delete().eq("atividade_id", id);
+    if (e1.error) { toast.error(e1.error.message); setExcluindo(false); return; }
+    const e2 = await supabase.from("atividades_salas").delete().eq("atividade_id", id);
+    if (e2.error) { toast.error(e2.error.message); setExcluindo(false); return; }
+    const e3 = await supabase.from("atividades").delete().eq("id", id);
+    if (e3.error) { toast.error(e3.error.message); setExcluindo(false); return; }
+    toast.success("Atividade excluída.");
+    setExcluindo(false);
+    setAExcluir(null);
+    load();
+  };
+
+  const visiveis =
+    filtroSala === "todas"
+      ? ativs
+      : ativs.filter(
+          (a) => a.publicada && a.atividades_salas?.some((x: any) => x.sala_id === filtroSala),
+        );
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
