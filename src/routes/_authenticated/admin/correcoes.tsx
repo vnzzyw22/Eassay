@@ -93,11 +93,22 @@ function Page() {
                         </p>
                       </div>
                     </div>
-                    <Link to="/admin/correcoes/$id" params={{ id: e.id }}>
-                      <Button size="sm" variant={corrigida ? "outline" : "default"}>
-                        {corrigida ? "Rever" : "Corrigir"}
+                    <div className="flex shrink-0 items-center gap-2">
+                      <Link to="/admin/correcoes/$id" params={{ id: e.id }}>
+                        <Button size="sm" variant={corrigida ? "outline" : "default"}>
+                          {corrigida ? "Rever" : "Corrigir"}
+                        </Button>
+                      </Link>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        aria-label="Excluir entrega"
+                        className="text-danger"
+                        onClick={() => setAExcluir(e)}
+                      >
+                        <Trash2 className="h-4 w-4" />
                       </Button>
-                    </Link>
+                    </div>
                   </li>
                 );
               })}
@@ -105,6 +116,24 @@ function Page() {
           )}
         </CardContent>
       </Card>
+
+      <AlertDialog open={!!aExcluir} onOpenChange={(o) => !o && setAExcluir(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              A entrega de {aExcluir?.profiles?.nome_completo ?? "este aluno"} será excluída, junto com a nota e
+              o comentário já salvos. Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={excluindo}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={(ev) => { ev.preventDefault(); excluir(); }} disabled={excluindo}>
+              {excluindo ? "Excluindo..." : "Excluir"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
