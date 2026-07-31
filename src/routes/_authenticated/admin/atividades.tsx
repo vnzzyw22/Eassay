@@ -99,8 +99,8 @@ function Page() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="font-display text-3xl">Atividades</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display min-w-0 text-2xl sm:text-3xl">Atividades</h2>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild><Button>+ Nova atividade</Button></DialogTrigger>
           <DialogContent className="max-h-[85vh] overflow-y-auto">
