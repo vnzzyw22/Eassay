@@ -62,8 +62,8 @@ function Page() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between gap-4">
-        <h2 className="font-display text-3xl">Notas</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display min-w-0 text-2xl sm:text-3xl">Notas</h2>
         <Button onClick={exportar} disabled={rows.length === 0}>
           <Download className="mr-2 h-4 w-4" strokeWidth={1.75} /> Exportar para Excel
         </Button>
@@ -74,7 +74,9 @@ function Page() {
           {rows.length === 0 ? (
             <p className="text-sm text-muted-foreground">Nenhuma nota lançada ainda.</p>
           ) : (
-            <table className="w-full text-sm">
+            <div className="-mx-2 overflow-x-auto px-2">
+            <table className="w-full min-w-[520px] text-sm">
+
               <thead className="text-left text-muted-foreground">
                 <tr><th className="py-2">Nº</th><th>Aluno</th><th>Atividade</th><th>Nota</th><th>Data</th></tr>
               </thead>
@@ -90,6 +92,7 @@ function Page() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </CardContent>
       </Card>

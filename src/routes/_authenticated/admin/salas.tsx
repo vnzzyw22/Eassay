@@ -48,8 +48,8 @@ function SalasPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="font-display text-3xl">Salas</h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-display min-w-0 text-2xl sm:text-3xl">Salas</h2>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild><Button>+ Nova sala</Button></DialogTrigger>
           <DialogContent>
