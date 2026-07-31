@@ -174,8 +174,22 @@ function Page() {
           </DialogContent>
         </Dialog>
       </div>
+
+      <div className="flex flex-wrap items-center gap-3">
+        <Label className="text-sm text-muted-foreground">Filtrar por sala</Label>
+        <Select value={filtroSala} onValueChange={setFiltroSala}>
+          <SelectTrigger className="w-64"><SelectValue placeholder="Todas as salas" /></SelectTrigger>
+          <SelectContent>
+            <SelectItem value="todas">Todas as salas</SelectItem>
+            {salas.map((s) => (
+              <SelectItem key={s.id} value={s.id}>{s.nome}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid gap-4">
-        {ativs.map((a) => {
+        {visiveis.map((a) => {
           const encerrada = new Date(a.prazo) < new Date();
           return (
             <Card key={a.id}>
@@ -193,15 +207,42 @@ function Page() {
                   Salas: {a.atividades_salas?.map((x: any) => x.salas?.nome).filter(Boolean).join(", ") || "nenhuma"}
                 </p>
                 <p className="text-muted-foreground">Status: {a.publicada ? "publicada" : "rascunho"}</p>
-                <Button size="sm" variant="outline" onClick={() => togglePublish(a)}>
-                  {a.publicada ? "Despublicar" : "Publicar"}
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" variant="outline" onClick={() => togglePublish(a)}>
+                    {a.publicada ? "Despublicar" : "Publicar"}
+                  </Button>
+                  <Button size="sm" variant="destructive" onClick={() => setAExcluir(a)}>
+                    Excluir
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           );
         })}
-        {ativs.length === 0 && <p className="text-muted-foreground">Nenhuma atividade criada.</p>}
+        {visiveis.length === 0 && (
+          <p className="text-muted-foreground">
+            {ativs.length === 0 ? "Nenhuma atividade criada." : "Nenhuma atividade para esta sala."}
+          </p>
+        )}
       </div>
+
+      <AlertDialog open={!!aExcluir} onOpenChange={(o) => !o && setAExcluir(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Tem certeza?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Excluir “{aExcluir?.titulo}” também remove os vínculos com as salas e todas as entregas
+              (textos, notas e comentários) dessa atividade. Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={excluindo}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={(e) => { e.preventDefault(); excluir(); }} disabled={excluindo}>
+              {excluindo ? "Excluindo..." : "Excluir"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
