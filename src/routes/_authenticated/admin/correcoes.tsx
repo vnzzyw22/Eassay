@@ -25,19 +25,34 @@ export const Route = createFileRoute("/_authenticated/admin/correcoes")({
 function Page() {
   const [pendentes, setPendentes] = useState<any[]>([]);
   const [corrigidas, setCorrigidas] = useState<any[]>([]);
+  const [aExcluir, setAExcluir] = useState<any | null>(null);
+  const [excluindo, setExcluindo] = useState(false);
+
+  const load = async () => {
+    const { data } = await supabase
+      .from("entregas")
+      .select("id, status, submitted_at, nota, aluno_id, atividades(titulo)")
+      .order("submitted_at", { ascending: false, nullsFirst: false });
+    const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
+    const rows = (data ?? []).map((e) => ({ ...e, profiles: profiles[e.aluno_id] ?? null }));
+    setPendentes(ordenarPorChamada(rows.filter((r) => r.status !== "corrigida")));
+    setCorrigidas(rows.filter((r) => r.status === "corrigida"));
+  };
 
   useEffect(() => {
-    (async () => {
-      const { data } = await supabase
-        .from("entregas")
-        .select("id, status, submitted_at, nota, aluno_id, atividades(titulo)")
-        .order("submitted_at", { ascending: false, nullsFirst: false });
-      const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
-      const rows = (data ?? []).map((e) => ({ ...e, profiles: profiles[e.aluno_id] ?? null }));
-      setPendentes(ordenarPorChamada(rows.filter((r) => r.status !== "corrigida")));
-      setCorrigidas(rows.filter((r) => r.status === "corrigida"));
-    })();
+    load();
   }, []);
+
+  const excluir = async () => {
+    if (!aExcluir) return;
+    setExcluindo(true);
+    const { error } = await supabase.from("entregas").delete().eq("id", aExcluir.id);
+    setExcluindo(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Entrega excluída.");
+    setAExcluir(null);
+    load();
+  };
 
   const total = pendentes.length + corrigidas.length;
 
