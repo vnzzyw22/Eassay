@@ -92,6 +92,7 @@ function Page() {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </CardContent>
       </Card>
