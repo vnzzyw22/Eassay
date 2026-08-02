@@ -29,6 +29,7 @@ export function ordenarPorChamada<T extends { profiles?: { numero_chamada?: numb
   rows: T[],
 ) {
   const num = (v: unknown) => {
+    if (v === null || v === undefined || v === "") return Number.MAX_SAFE_INTEGER;
     const n = Number(v);
     return Number.isFinite(n) ? n : Number.MAX_SAFE_INTEGER;
   };
