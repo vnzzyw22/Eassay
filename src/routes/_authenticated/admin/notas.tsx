@@ -71,7 +71,7 @@ function Page() {
           cell.alignment = { vertical: "middle", horizontal: "center", wrapText: true };
         }
       });
-      row.height = rowNumber === 1 ? 24 : undefined;
+      if (rowNumber === 1) row.height = 24;
     });
 
     ws.columns.forEach((col) => {
