@@ -28,9 +28,11 @@ export async function fetchProfilesMap(ids: (string | null | undefined)[]) {
 export function ordenarPorChamada<T extends { profiles?: { numero_chamada?: number | null } | null }>(
   rows: T[],
 ) {
-  return [...rows].sort((a, b) => {
-    const na = a.profiles?.numero_chamada ?? Number.MAX_SAFE_INTEGER;
-    const nb = b.profiles?.numero_chamada ?? Number.MAX_SAFE_INTEGER;
-    return na - nb;
-  });
+  const num = (v: unknown) => {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : Number.MAX_SAFE_INTEGER;
+  };
+  return [...rows].sort(
+    (a, b) => num(a.profiles?.numero_chamada) - num(b.profiles?.numero_chamada),
+  );
 }
