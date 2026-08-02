@@ -142,9 +142,13 @@ function Page() {
 
       {/* 1. Título */}
       <div className="flex items-start justify-between gap-4">
-        <h2 className="font-serif text-4xl font-semibold leading-tight text-foreground">
-          {ativ.titulo?.trim() || "Atividade sem título"}
-        </h2>
+        {ativ.titulo?.trim() ? (
+          <h2 className="font-serif text-4xl font-semibold leading-tight text-foreground">
+            {ativ.titulo.trim()}
+          </h2>
+        ) : (
+          <span />
+        )}
         <StatusBadge status={status} />
       </div>
 
