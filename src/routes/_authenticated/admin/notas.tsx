@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Download } from "lucide-react";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProfilesMap, ordenarPorChamada } from "@/lib/profiles";
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,7 @@ function Page() {
     return Array.from(set);
   }, [rows]);
 
-  const exportar = () => {
+  const exportar = async () => {
     const porAluno = new Map<string, any>();
     for (const r of rows) {
       const linha = porAluno.get(r.aluno_id) ?? {
@@ -53,11 +53,47 @@ function Page() {
         (Number(b["Número de chamada"]) || Number.MAX_SAFE_INTEGER),
     );
     const header = ["Número de chamada", "Nome do aluno", ...atividades];
-    const ws = XLSX.utils.json_to_sheet(dados, { header });
-    ws["!cols"] = header.map((h) => ({ wch: Math.max(14, h.length + 2) }));
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Notas");
-    XLSX.writeFile(wb, `notas-${new Date().toISOString().slice(0, 10)}.xlsx`);
+
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet("Notas", {
+      views: [{ state: "frozen", ySplit: 1 }],
+    });
+    ws.columns = header.map((h) => ({ header: h, key: h }));
+    for (const d of dados) ws.addRow(d);
+
+    const thin = { style: "thin" as const, color: { argb: "FFD4D0C6" } };
+    ws.eachRow((row, rowNumber) => {
+      row.eachCell({ includeEmpty: true }, (cell) => {
+        cell.border = { top: thin, left: thin, bottom: thin, right: thin };
+        cell.font = { name: "Arial", size: 11, ...(rowNumber === 1 ? { bold: true, color: { argb: "FFFFFFFF" } } : {}) };
+        if (rowNumber === 1) {
+          cell.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FF2563EB" } };
+          cell.alignment = { vertical: "middle", horizontal: "center", wrapText: true };
+        }
+      });
+      row.height = rowNumber === 1 ? 24 : undefined;
+    });
+
+    ws.columns.forEach((col) => {
+      let max = 10;
+      col.eachCell?.({ includeEmpty: true }, (cell) => {
+        const len = String(cell.value ?? "").length;
+        if (len > max) max = len;
+      });
+      col.width = Math.min(max + 4, 50);
+    });
+
+    const buffer = await wb.xlsx.writeBuffer();
+    const url = URL.createObjectURL(
+      new Blob([buffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      }),
+    );
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `notas-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return (
