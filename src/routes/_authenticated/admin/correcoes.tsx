@@ -36,7 +36,7 @@ function Page() {
     const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
     const rows = (data ?? []).map((e) => ({ ...e, profiles: profiles[e.aluno_id] ?? null }));
     setPendentes(ordenarPorChamada(rows.filter((r) => r.status !== "corrigida")));
-    setCorrigidas(rows.filter((r) => r.status === "corrigida"));
+    setCorrigidas(ordenarPorChamada(rows.filter((r) => r.status === "corrigida")));
   };
 
   useEffect(() => {
