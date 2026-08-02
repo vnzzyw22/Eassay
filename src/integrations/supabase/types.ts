@@ -237,6 +237,16 @@ export type Database = {
         }
         Returns: boolean
       }
+      ranking_geral: {
+        Args: never
+        Returns: {
+          aluno_id: string
+          media: number
+          nome_completo: string
+          salas: string
+          total_corrigidas: number
+        }[]
+      }
       ranking_minha_sala: {
         Args: never
         Returns: {
