@@ -61,7 +61,7 @@ function Page() {
           ) : (
             <ul className="divide-y">
               {entregas.map((e) => (
-                <li key={e.id} className="flex items-center justify-between gap-3 py-3">
+                <li key={e.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
                   <div>
                     <p className="font-medium">{(e.atividades as any)?.titulo ?? "Atividade"}</p>
                     <p className="text-sm text-muted-foreground">

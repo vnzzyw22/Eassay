@@ -108,7 +108,7 @@ function Lista({
       {rows.map((r, i) => (
         <li
           key={r.aluno_id}
-          className={`flex items-center justify-between gap-3 py-3 text-sm ${
+          className={`flex flex-wrap items-center justify-between gap-3 py-3 text-sm ${
             r.aluno_id === meuId ? "font-medium text-brand-deep" : ""
           }`}
         >
