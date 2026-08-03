@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { School, User, UserPlus, LogIn, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
+  ssr: false,
   head: () => ({ meta: [{ title: "Entrar — Eassay" }] }),
   component: AuthPage,
 });
