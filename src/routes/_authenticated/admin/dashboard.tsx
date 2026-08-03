@@ -53,8 +53,8 @@ function Dashboard() {
           ) : (
             <ul className="divide-y">
               {ultimas.map((e) => (
-                <li key={e.id} className="flex items-center justify-between py-2 text-sm">
-                  <span>
+                <li key={e.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
+                  <span className="min-w-0 break-words">
                     <strong>{(e.profiles as any)?.nome_completo ?? "Aluno"}</strong> — {(e.atividades as any)?.titulo}
                   </span>
                   <span className="text-muted-foreground">{e.status}</span>
