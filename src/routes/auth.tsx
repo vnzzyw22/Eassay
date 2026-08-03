@@ -201,12 +201,10 @@ function AuthPage() {
 
         <div className="relative max-w-md text-center">
           <p className="font-serif text-3xl leading-relaxed text-white/90 italic">
-            "A crise hídrica nas grandes cidades nos faz repensar, a cada torneira aberta, o valor de uma gota que já não volta."
-          </p>
-          <p className="mt-6 text-sm text-white/50 tracking-wide">
-            Exemplo de redação — tema de 2026
+            "Toda redação começa com uma ideia. O resto é revisão."
           </p>
         </div>
+
       </section>
     </div>
   );
