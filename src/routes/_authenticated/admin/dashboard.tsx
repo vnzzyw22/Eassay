@@ -39,7 +39,7 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       <h2 className="font-display text-3xl">Dashboard</h2>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Alunos" value={stats.alunos} />
         <StatCard label="Salas" value={stats.salas} />
         <StatCard label="Atividades abertas" value={stats.atividadesAbertas} />
