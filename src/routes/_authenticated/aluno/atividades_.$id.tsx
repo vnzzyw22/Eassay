@@ -132,7 +132,7 @@ function Page() {
   if (!ativ) return <p className="text-sm text-muted-foreground">Carregando atividade...</p>;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-8 animate-fade-in">
+    <div className="mx-auto w-full max-w-3xl space-y-6 animate-fade-in sm:space-y-8">
       <Link
         to="/aluno/atividades"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -141,9 +141,9 @@ function Page() {
       </Link>
 
       {/* 1. Título */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         {ativ.titulo?.trim() ? (
-          <h2 className="font-serif text-4xl font-semibold leading-tight text-foreground">
+          <h2 className="min-w-0 break-words font-serif text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
             {ativ.titulo.trim()}
           </h2>
         ) : (
@@ -153,7 +153,7 @@ function Page() {
       </div>
 
       {/* 2. Informações */}
-      <div className="card-surface grid gap-4 p-5 sm:grid-cols-3">
+      <div className="card-surface grid grid-cols-1 gap-4 p-4 sm:grid-cols-3 sm:p-5">
         <Info rotulo="Tema" valor={ativ.descricao || "—"} span />
         <Info rotulo="Prazo" valor={`${formatarData(ativ.prazo)} · ${contagem}`} />
         <Info
@@ -199,14 +199,14 @@ function Page() {
             <Label htmlFor="redacao" className="text-sm font-medium">Sua redação</Label>
             <Textarea
               id="redacao"
-              rows={18}
+              rows={14}
               value={texto}
               disabled={!podeEditar}
               onChange={(e) => setTexto(e.target.value)}
               placeholder="Comece a escrever aqui. O rascunho é salvo automaticamente."
-              className="mt-2 resize-y rounded-xl border-border bg-card p-5 text-base leading-relaxed"
+              className="mt-2 min-h-[40vh] resize-y rounded-xl border-border bg-card p-4 text-base leading-relaxed sm:p-5"
             />
-            <div className="mt-3 space-y-2">
+            <div className="sticky bottom-0 z-10 mt-3 space-y-2 bg-background/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/80">
               <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
@@ -259,7 +259,7 @@ function Page() {
 
           {/* 5. Botões */}
           {podeEditar ? (
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-1 gap-3 sm:flex sm:flex-wrap">
               <Button variant="outline" onClick={() => persistir("rascunho")} disabled={salvando}>
                 <Save className="mr-2 h-4 w-4" strokeWidth={1.75} /> Salvar rascunho
               </Button>

@@ -18,7 +18,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FiltroSala } from "@/lib/filtro-sala";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/admin/atividades")({
@@ -139,8 +139,8 @@ function Page() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-display min-w-0 text-2xl sm:text-3xl">Atividades</h2>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild><Button>+ Nova atividade</Button></DialogTrigger>
-          <DialogContent className="max-h-[85vh] overflow-y-auto">
+          <DialogTrigger asChild><Button className="w-full sm:w-auto">+ Nova atividade</Button></DialogTrigger>
+          <DialogContent className="max-h-[85vh] w-[calc(100vw-2rem)] max-w-lg overflow-y-auto">
             <DialogHeader><DialogTitle>Nova atividade</DialogTitle></DialogHeader>
             <form onSubmit={criar} className="space-y-4">
               <div><Label>Título</Label><Input required value={titulo} onChange={(e) => setTitulo(e.target.value)} /></div>
@@ -175,18 +175,7 @@ function Page() {
         </Dialog>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <Label className="text-sm text-muted-foreground">Filtrar por sala</Label>
-        <Select value={filtroSala} onValueChange={setFiltroSala}>
-          <SelectTrigger className="w-64"><SelectValue placeholder="Todas as salas" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="todas">Todas as salas</SelectItem>
-            {salas.map((s) => (
-              <SelectItem key={s.id} value={s.id}>{s.nome}</SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <FiltroSala salas={salas} value={filtroSala} onChange={setFiltroSala} />
 
       <div className="grid gap-4">
         {visiveis.map((a) => {
@@ -194,15 +183,15 @@ function Page() {
           return (
             <Card key={a.id}>
               <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <span>{a.titulo}</span>
+                <CardTitle className="flex flex-wrap items-start justify-between gap-2">
+                  <span className="min-w-0 break-words">{a.titulo}</span>
                   <span className={`text-xs rounded px-2 py-0.5 ${encerrada ? "bg-muted" : "bg-primary text-primary-foreground"}`}>
                     {encerrada ? "encerrada" : "aberta"}
                   </span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 text-sm">
-                <p className="text-muted-foreground">Prazo: {new Date(a.prazo).toLocaleString()}</p>
+                <p className="break-words text-muted-foreground">Prazo: {new Date(a.prazo).toLocaleString()}</p>
                 <p className="text-muted-foreground">
                   Salas: {a.atividades_salas?.map((x: any) => x.salas?.nome).filter(Boolean).join(", ") || "nenhuma"}
                 </p>

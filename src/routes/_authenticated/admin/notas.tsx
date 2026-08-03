@@ -4,6 +4,7 @@ import { Download } from "lucide-react";
 import ExcelJS from "exceljs";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchProfilesMap, ordenarPorChamada } from "@/lib/profiles";
+import { FiltroSala, fetchSalasPorAluno, useSalas } from "@/lib/filtro-sala";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -13,7 +14,9 @@ export const Route = createFileRoute("/_authenticated/admin/notas")({
 });
 
 function Page() {
-  const [rows, setRows] = useState<any[]>([]);
+  const [todas, setTodas] = useState<any[]>([]);
+  const [filtroSala, setFiltroSala] = useState("todas");
+  const salas = useSalas();
   useEffect(() => {
     (async () => {
       const { data } = await supabase
@@ -21,14 +24,30 @@ function Page() {
         .select("id, nota, corrected_at, aluno_id, atividades(titulo)")
         .eq("status", "corrigida")
         .order("corrected_at", { ascending: false });
-      const profiles = await fetchProfilesMap((data ?? []).map((e) => e.aluno_id));
-      setRows(
+      const ids = (data ?? []).map((e) => e.aluno_id);
+      const [profiles, salasPorAluno] = await Promise.all([
+        fetchProfilesMap(ids),
+        fetchSalasPorAluno(ids),
+      ]);
+      setTodas(
         ordenarPorChamada(
-          (data ?? []).map((r) => ({ ...r, profiles: profiles[r.aluno_id] ?? null })),
+          (data ?? []).map((r) => ({
+            ...r,
+            profiles: profiles[r.aluno_id] ?? null,
+            salaIds: salasPorAluno[r.aluno_id] ?? [],
+          })),
         ),
       );
     })();
   }, []);
+
+  const rows = useMemo(
+    () =>
+      filtroSala === "todas"
+        ? todas
+        : todas.filter((r) => r.salaIds?.includes(filtroSala)),
+    [todas, filtroSala],
+  );
 
   const atividades = useMemo(() => {
     const set = new Set<string>();
@@ -100,17 +119,39 @@ function Page() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-display min-w-0 text-2xl sm:text-3xl">Notas</h2>
-        <Button onClick={exportar} disabled={rows.length === 0}>
+        <Button onClick={exportar} disabled={rows.length === 0} className="w-full sm:w-auto">
           <Download className="mr-2 h-4 w-4" strokeWidth={1.75} /> Exportar para Excel
         </Button>
       </div>
+      <FiltroSala salas={salas} value={filtroSala} onChange={setFiltroSala} />
+
       <Card>
         <CardHeader><CardTitle>Entregas corrigidas</CardTitle></CardHeader>
         <CardContent>
           {rows.length === 0 ? (
             <p className="text-sm text-muted-foreground">Nenhuma nota lançada ainda.</p>
           ) : (
-            <div className="-mx-2 overflow-x-auto px-2">
+            <>
+            <ul className="divide-y sm:hidden">
+              {rows.map((r) => (
+                <li key={r.id} className="space-y-1 py-3 text-sm">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="min-w-0 font-medium">
+                      <span className="mr-2 tabular-nums text-muted-foreground">
+                        {r.profiles?.numero_chamada ?? "—"}
+                      </span>
+                      {r.profiles?.nome_completo}
+                    </p>
+                    <span className="shrink-0 font-semibold">{r.nota ?? "—"}</span>
+                  </div>
+                  <p className="text-muted-foreground">{(r.atividades as any)?.titulo}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {r.corrected_at ? new Date(r.corrected_at).toLocaleDateString() : "—"}
+                  </p>
+                </li>
+              ))}
+            </ul>
+            <div className="-mx-2 hidden overflow-x-auto px-2 sm:block">
             <table className="w-full min-w-[520px] text-sm">
 
               <thead className="text-left text-muted-foreground">
@@ -129,6 +170,7 @@ function Page() {
               </tbody>
             </table>
             </div>
+            </>
           )}
         </CardContent>
       </Card>

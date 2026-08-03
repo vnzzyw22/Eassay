@@ -38,7 +38,7 @@ function SalaDetail() {
   if (!sala) return <p>Carregando...</p>;
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <Link to="/admin/salas" className="text-sm text-muted-foreground hover:underline">← Salas</Link>
           <h2 className="font-display mt-1 text-3xl">{sala.nome}</h2>
@@ -54,7 +54,7 @@ function SalaDetail() {
           ) : (
             <ul className="divide-y">
               {alunos.map((a) => (
-                <li key={a.aluno_id} className="flex items-center justify-between py-2">
+                <li key={a.aluno_id} className="flex flex-wrap items-center justify-between gap-2 py-2">
                   <div>
                     <p className="font-medium">{a.profiles?.nome_completo}</p>
                     <p className="text-sm text-muted-foreground">{a.profiles?.email}</p>

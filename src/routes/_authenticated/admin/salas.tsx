@@ -51,8 +51,8 @@ function SalasPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <h2 className="font-display min-w-0 text-2xl sm:text-3xl">Salas</h2>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild><Button>+ Nova sala</Button></DialogTrigger>
-          <DialogContent>
+          <DialogTrigger asChild><Button className="w-full sm:w-auto">+ Nova sala</Button></DialogTrigger>
+          <DialogContent className="w-[calc(100vw-2rem)] max-w-lg">
             <DialogHeader><DialogTitle>Nova sala</DialogTitle></DialogHeader>
             <div className="space-y-3">
               <div><Label>Nome</Label><Input value={nome} onChange={(e) => setNome(e.target.value)} /></div>
@@ -62,7 +62,7 @@ function SalasPage() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {salas.map((s) => (
           <Card key={s.id}>
             <CardHeader className="pb-2">

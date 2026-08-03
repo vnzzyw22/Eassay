@@ -39,7 +39,7 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       <h2 className="font-display text-3xl">Dashboard</h2>
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Alunos" value={stats.alunos} />
         <StatCard label="Salas" value={stats.salas} />
         <StatCard label="Atividades abertas" value={stats.atividadesAbertas} />
@@ -53,8 +53,8 @@ function Dashboard() {
           ) : (
             <ul className="divide-y">
               {ultimas.map((e) => (
-                <li key={e.id} className="flex items-center justify-between py-2 text-sm">
-                  <span>
+                <li key={e.id} className="flex flex-wrap items-center justify-between gap-2 py-2 text-sm">
+                  <span className="min-w-0 break-words">
                     <strong>{(e.profiles as any)?.nome_completo ?? "Aluno"}</strong> — {(e.atividades as any)?.titulo}
                   </span>
                   <span className="text-muted-foreground">{e.status}</span>
