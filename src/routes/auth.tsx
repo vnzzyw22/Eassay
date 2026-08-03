@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { School, User, UserPlus, LogIn, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
+  ssr: false,
   head: () => ({ meta: [{ title: "Entrar — Eassay" }] }),
   component: AuthPage,
 });
@@ -64,7 +65,7 @@ function AuthPage() {
     <div className="min-h-screen flex flex-col lg:flex-row bg-login-paper">
       {/* Coluna esquerda — acesso */}
       <section className="flex-1 flex items-center justify-center px-6 py-12 lg:py-0">
-        <div className="w-full max-w-md bg-white rounded-[16px] shadow-[0_8px_30px_rgba(30,41,59,0.08)] border border-login-ink/5 p-8 lg:p-10">
+        <div className="w-full max-w-md bg-card rounded-2xl border border-border shadow-[0_2px_16px_rgba(30,41,59,0.06)] p-8 lg:p-10">
           <div className="mb-8 text-center">
             <h1 className="font-serif text-5xl lg:text-6xl font-bold text-login-ink tracking-tight">
               Eassay
