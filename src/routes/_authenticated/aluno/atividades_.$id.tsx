@@ -62,6 +62,7 @@ function Page() {
 
   const prazoOk = ativ ? new Date(ativ.prazo) > new Date() : false;
   const corrigida = entrega?.status === "corrigida";
+  const marcacoes: Marcacao[] = Array.isArray(entrega?.marcacoes) ? (entrega.marcacoes as Marcacao[]) : [];
   const entregue = entrega?.status === "entregue";
   const podeEditar = prazoOk && !corrigida && !entregue;
   const { restante, texto: contagem } = useContagemRegressiva(ativ?.prazo);
