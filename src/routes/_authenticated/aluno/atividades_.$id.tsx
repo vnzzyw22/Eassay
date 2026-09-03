@@ -14,6 +14,7 @@ import {
   formatarData,
   contarPalavras,
 } from "@/lib/atividade-status";
+import { LegendaCores, TextoMarcavel, type Marcacao } from "@/lib/marcacoes";
 
 export const Route = createFileRoute("/_authenticated/aluno/atividades_/$id")({
   head: () => ({
