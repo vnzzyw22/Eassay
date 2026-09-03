@@ -143,6 +143,31 @@ function Page() {
           )}
         </CardContent>
       </Card>
+
+      <AlertDialog open={!!alvo} onOpenChange={(o) => !o && setAlvo(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir conta do aluno?</AlertDialogTitle>
+            <AlertDialogDescription>
+              A conta de {alvo?.profiles?.nome_completo ?? "este aluno"} ({alvo?.profiles?.email}) será
+              apagada junto com todas as redações, notas e vínculos de sala. Essa ação não pode ser
+              desfeita, mas o e-mail poderá ser usado em um novo cadastro.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={excluindo}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                void confirmarExclusao();
+              }}
+              disabled={excluindo}
+            >
+              {excluindo ? "Excluindo..." : "Excluir conta"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
