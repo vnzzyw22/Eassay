@@ -92,11 +92,11 @@ function Page() {
           ) : (
             <ul className="divide-y">
               {visiveis.map((a) => (
-                <li key={a.user_id}>
+                <li key={a.user_id} className="flex items-center gap-2">
                   <Link
                     to="/admin/alunos/$id"
                     params={{ id: a.user_id }}
-                    className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm hover:bg-muted/50"
+                    className="grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm hover:bg-muted/50"
                   >
                     <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums">
                       {a.profiles?.numero_chamada ?? "—"}
@@ -110,6 +110,15 @@ function Page() {
                     </div>
                     <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.75} />
                   </Link>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Excluir conta de ${a.profiles?.nome_completo ?? "aluno"}`}
+                    className="shrink-0 text-danger hover:bg-danger-soft hover:text-danger"
+                    onClick={() => setAlvo(a)}
+                  >
+                    <Trash2 className="h-4 w-4" strokeWidth={1.75} />
+                  </Button>
                 </li>
               ))}
             </ul>
