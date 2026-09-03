@@ -1,10 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { excluirAluno } from "@/lib/admin-alunos.functions";
 import { fetchProfilesMap, ordenarPorChamada } from "@/lib/profiles";
 import { FiltroSala, useSalas } from "@/lib/filtro-sala";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/admin/alunos")({
   head: () => ({ meta: [{ title: "Alunos — Eassay" }] }),
@@ -14,7 +28,25 @@ export const Route = createFileRoute("/_authenticated/admin/alunos")({
 function Page() {
   const [alunos, setAlunos] = useState<any[]>([]);
   const [filtroSala, setFiltroSala] = useState("todas");
+  const [alvo, setAlvo] = useState<any>(null);
+  const [excluindo, setExcluindo] = useState(false);
   const salas = useSalas();
+  const remover = useServerFn(excluirAluno);
+
+  const confirmarExclusao = async () => {
+    if (!alvo) return;
+    setExcluindo(true);
+    try {
+      await remover({ data: { aluno_id: alvo.user_id } });
+      setAlunos((lista) => lista.filter((a) => a.user_id !== alvo.user_id));
+      toast.success("Conta do aluno excluída. O e-mail está livre para novo cadastro.");
+      setAlvo(null);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Não foi possível excluir a conta.");
+    } finally {
+      setExcluindo(false);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -78,11 +110,11 @@ function Page() {
           ) : (
             <ul className="divide-y">
               {visiveis.map((a) => (
-                <li key={a.user_id}>
+                <li key={a.user_id} className="flex items-center gap-2">
                   <Link
                     to="/admin/alunos/$id"
                     params={{ id: a.user_id }}
-                    className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm hover:bg-muted/50"
+                    className="grid min-w-0 flex-1 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm hover:bg-muted/50"
                   >
                     <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums">
                       {a.profiles?.numero_chamada ?? "—"}
@@ -96,12 +128,46 @@ function Page() {
                     </div>
                     <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" strokeWidth={1.75} />
                   </Link>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label={`Excluir conta de ${a.profiles?.nome_completo ?? "aluno"}`}
+                    className="shrink-0 text-danger hover:bg-danger-soft hover:text-danger"
+                    onClick={() => setAlvo(a)}
+                  >
+                    <Trash2 className="h-4 w-4" strokeWidth={1.75} />
+                  </Button>
                 </li>
               ))}
             </ul>
           )}
         </CardContent>
       </Card>
+
+      <AlertDialog open={!!alvo} onOpenChange={(o) => !o && setAlvo(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir conta do aluno?</AlertDialogTitle>
+            <AlertDialogDescription>
+              A conta de {alvo?.profiles?.nome_completo ?? "este aluno"} ({alvo?.profiles?.email}) será
+              apagada junto com todas as redações, notas e vínculos de sala. Essa ação não pode ser
+              desfeita, mas o e-mail poderá ser usado em um novo cadastro.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={excluindo}>Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                void confirmarExclusao();
+              }}
+              disabled={excluindo}
+            >
+              {excluindo ? "Excluindo..." : "Excluir conta"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
