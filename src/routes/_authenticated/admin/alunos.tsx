@@ -1,10 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
+import { excluirAluno } from "@/lib/admin-alunos.functions";
 import { fetchProfilesMap, ordenarPorChamada } from "@/lib/profiles";
 import { FiltroSala, useSalas } from "@/lib/filtro-sala";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/admin/alunos")({
   head: () => ({ meta: [{ title: "Alunos — Eassay" }] }),
