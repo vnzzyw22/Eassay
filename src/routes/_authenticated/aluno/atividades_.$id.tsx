@@ -177,12 +177,21 @@ function Page() {
       </div>
 
       {corrigida ? (
-        <div className="rounded-xl border border-success/30 bg-success-soft p-6">
-          <p className="font-display text-2xl text-success-foreground">
-            Nota: {entrega.nota != null ? Number(entrega.nota).toLocaleString("pt-BR") : "—"}
-            {entrega.comentario ? ` — ${entrega.comentario}` : ""}
-          </p>
-          <p className="mt-3 whitespace-pre-wrap text-sm text-foreground/80">{entrega.texto}</p>
+        <div className="space-y-4">
+          <div className="rounded-xl border border-success/30 bg-success-soft p-6">
+            <p className="font-display text-2xl text-success-foreground">
+              Nota: {entrega.nota != null ? Number(entrega.nota).toLocaleString("pt-BR") : "—"}
+            </p>
+            {entrega.comentario && (
+              <p className="mt-2 whitespace-pre-wrap text-sm text-success-foreground">{entrega.comentario}</p>
+            )}
+          </div>
+          {entrega.texto && (
+            <>
+              <TextoMarcavel texto={entrega.texto} marcacoes={marcacoes} editavel={false} />
+              {marcacoes.length > 0 && <LegendaCores />}
+            </>
+          )}
         </div>
       ) : !prazoOk && !entregue ? (
         <div className="card-surface flex items-center gap-3 p-8 text-muted-foreground">
