@@ -28,7 +28,25 @@ export const Route = createFileRoute("/_authenticated/admin/alunos")({
 function Page() {
   const [alunos, setAlunos] = useState<any[]>([]);
   const [filtroSala, setFiltroSala] = useState("todas");
+  const [alvo, setAlvo] = useState<any>(null);
+  const [excluindo, setExcluindo] = useState(false);
   const salas = useSalas();
+  const remover = useServerFn(excluirAluno);
+
+  const confirmarExclusao = async () => {
+    if (!alvo) return;
+    setExcluindo(true);
+    try {
+      await remover({ data: { aluno_id: alvo.user_id } });
+      setAlunos((lista) => lista.filter((a) => a.user_id !== alvo.user_id));
+      toast.success("Conta do aluno excluída. O e-mail está livre para novo cadastro.");
+      setAlvo(null);
+    } catch (e: any) {
+      toast.error(e?.message ?? "Não foi possível excluir a conta.");
+    } finally {
+      setExcluindo(false);
+    }
+  };
 
   useEffect(() => {
     (async () => {
