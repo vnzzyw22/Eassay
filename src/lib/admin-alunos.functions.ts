@@ -28,10 +28,15 @@ export const excluirAluno = createServerFn({ method: "POST" })
     const arquivos = (entregas ?? []).map((e) => e.arquivo_url).filter(Boolean) as string[];
     if (arquivos.length) await supabaseAdmin.storage.from("entregas").remove(arquivos);
 
-    for (const tabela of ["entregas", "alunos_salas", "user_roles", "profiles"] as const) {
-      const coluna = tabela === "user_roles" ? "user_id" : tabela === "profiles" ? "id" : "aluno_id";
-      const { error } = await supabaseAdmin.from(tabela).delete().eq(coluna, data.aluno_id);
-      if (error) throw new Error(`Falha ao remover dados (${tabela}): ${error.message}`);
+    const etapas = [
+      { nome: "entregas", run: () => supabaseAdmin.from("entregas").delete().eq("aluno_id", data.aluno_id) },
+      { nome: "salas", run: () => supabaseAdmin.from("alunos_salas").delete().eq("aluno_id", data.aluno_id) },
+      { nome: "papéis", run: () => supabaseAdmin.from("user_roles").delete().eq("user_id", data.aluno_id) },
+      { nome: "perfil", run: () => supabaseAdmin.from("profiles").delete().eq("id", data.aluno_id) },
+    ];
+    for (const etapa of etapas) {
+      const { error } = await etapa.run();
+      if (error) throw new Error(`Falha ao remover dados (${etapa.nome}): ${error.message}`);
     }
 
     const { error: authErr } = await supabaseAdmin.auth.admin.deleteUser(data.aluno_id);
