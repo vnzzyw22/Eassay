@@ -108,16 +108,16 @@ function Lista({
       {rows.map((r, i) => (
         <li
           key={r.aluno_id}
-          className={`flex flex-wrap items-center justify-between gap-3 py-3 text-sm ${
+          className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 py-3 text-sm ${
             r.aluno_id === meuId ? "font-medium text-brand-deep" : ""
           }`}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 items-center gap-3">
             <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums">
               {i + 1}
             </span>
             <div>
-              <p className="flex items-center gap-1.5">
+              <p className="flex min-w-0 items-center gap-1.5 break-words">
                 {r.nome_completo}
                 {i < 3 && <Trophy className="h-3.5 w-3.5 text-brand-deep" strokeWidth={1.75} />}
               </p>
@@ -126,7 +126,7 @@ function Lista({
               )}
             </div>
           </div>
-          <span className="tabular-nums font-semibold">
+          <span className="shrink-0 tabular-nums font-semibold">
             {r.media.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
         </li>
