@@ -23,9 +23,11 @@ export function AlunoLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:gap-6 sm:px-6">
-          <Brand />
-          <nav className="flex items-center gap-1">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-3 py-3 sm:gap-6 sm:px-6">
+          <div className="shrink-0">
+            <Brand />
+          </div>
+          <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto sm:gap-1">
             {items.map((it) => {
               const active = pathname.startsWith(it.to);
               const Icon = it.icon;
@@ -33,7 +35,8 @@ export function AlunoLayout({ children }: { children: ReactNode }) {
                 <Link
                   key={it.to}
                   to={it.to}
-                  className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition ${
+                  aria-label={it.label}
+                  className={`flex min-h-11 min-w-10 shrink-0 items-center justify-center gap-2 rounded-lg px-2 py-2 text-sm transition sm:px-3 ${
                     active
                       ? "bg-primary-soft text-brand-deep font-medium"
                       : "text-muted-foreground hover:bg-muted"
