@@ -145,11 +145,11 @@ function Tabela({ rows, mostrarSala }: { rows: Linha[]; mostrarSala?: boolean })
               top3 ? "border-primary/40 bg-primary-soft/40" : "border-border"
             }`}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex min-w-0 items-center gap-3">
               <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums">
                 {i + 1}
               </span>
-              <div>
+              <div className="min-w-0 break-words">
                 <p className="flex items-center gap-1.5 font-medium">
                   {r.nome}
                   {top3 && <Trophy className="h-3.5 w-3.5 text-brand-deep" strokeWidth={1.75} />}
