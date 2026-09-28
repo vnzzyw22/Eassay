@@ -141,7 +141,7 @@ function Tabela({ rows, mostrarSala }: { rows: Linha[]; mostrarSala?: boolean })
         return (
           <li
             key={r.aluno_id}
-            className={`flex flex-wrap items-center justify-between gap-3 rounded-lg border px-3 py-3 text-sm sm:px-4 ${
+            className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-lg border px-3 py-3 text-sm sm:px-4 ${
               top3 ? "border-primary/40 bg-primary-soft/40" : "border-border"
             }`}
           >

@@ -116,7 +116,7 @@ function Lista({
             <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-semibold tabular-nums">
               {i + 1}
             </span>
-            <div>
+            <div className="min-w-0">
               <p className="flex min-w-0 items-center gap-1.5 break-words">
                 {r.nome_completo}
                 {i < 3 && <Trophy className="h-3.5 w-3.5 text-brand-deep" strokeWidth={1.75} />}
