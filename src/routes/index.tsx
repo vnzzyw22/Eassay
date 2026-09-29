@@ -25,29 +25,33 @@ function Index() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Brand />
-          <nav className="flex gap-2">
-            <Link to="/auth">
-              <Button variant="ghost">Entrar</Button>
+        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-4 py-3 sm:flex sm:justify-between sm:px-6 sm:py-4">
+          <div className="min-w-0">
+            <Brand />
+          </div>
+          <nav className="flex shrink-0 gap-1 sm:gap-2" aria-label="Acessos principais">
+            <Link to="/auth" className="shrink-0">
+              <Button variant="ghost" className="px-3 sm:px-4">Entrar</Button>
             </Link>
-            <Link to="/cadastro">
-              <Button>Sou aluno</Button>
+            <Link to="/cadastro" className="shrink-0">
+              <Button className="px-3 sm:px-4">Sou aluno</Button>
             </Link>
           </nav>
         </div>
       </header>
-      <main className="mx-auto max-w-3xl px-6 py-24 text-center">
-        <h2 className="font-display text-5xl leading-tight">Redações da turma, organizadas em um só lugar.</h2>
-        <p className="mt-6 text-lg text-muted-foreground">
-          A Prof. Fernanda publica as propostas — como "A crise hídrica nas grandes cidades" para o 3º A — e os alunos escrevem, entregam e recebem a correção pela plataforma.
+      <main className="mx-auto flex max-w-3xl flex-col items-center px-4 py-14 text-center sm:px-6 sm:py-24">
+        <h1 className="font-display max-w-2xl text-4xl leading-tight sm:text-5xl">
+          Redações da turma, organizadas em um só lugar.
+        </h1>
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg">
+          A professora publica as propostas, e os alunos escrevem, entregam e recebem as correções pela plataforma.
         </p>
-        <div className="mt-8 flex justify-center gap-3">
-          <Link to="/auth">
-            <Button size="lg">Entrar na minha conta</Button>
+        <div className="mt-8 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+          <Link to="/auth" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto">Entrar na minha conta</Button>
           </Link>
-          <Link to="/cadastro">
-            <Button size="lg" variant="outline">
+          <Link to="/cadastro" className="w-full sm:w-auto">
+            <Button size="lg" variant="outline" className="h-auto min-h-12 w-full whitespace-normal px-5 py-3 text-center leading-snug sm:w-auto sm:whitespace-nowrap">
               Sou aluno e quero me cadastrar
             </Button>
           </Link>
