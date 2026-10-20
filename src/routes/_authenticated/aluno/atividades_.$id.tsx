@@ -60,7 +60,8 @@ function Page() {
     })();
   }, [id]);
 
-  const prazoOk = ativ ? new Date(ativ.prazo) > new Date() : false;
+  const devolvida = !!entrega?.devolvida_em && entrega?.status === "rascunho";
+  const prazoOk = devolvida || (ativ ? new Date(ativ.prazo) > new Date() : false);
   const corrigida = entrega?.status === "corrigida";
   const marcacoes: Marcacao[] = Array.isArray(entrega?.marcacoes) ? (entrega.marcacoes as Marcacao[]) : [];
   const entregue = entrega?.status === "entregue";
@@ -104,6 +105,7 @@ function Page() {
       arquivo_url: arquivoUrl,
       status,
       submitted_at: status === "entregue" ? new Date().toISOString() : entrega?.submitted_at ?? null,
+      ...(status === "entregue" && entrega?.devolvida_em ? { devolvida_em: null } : {}),
     };
     const { data, error } = entrega
       ? await supabase.from("entregas").update(payload).eq("id", entrega.id).select().maybeSingle()
@@ -205,6 +207,13 @@ function Page() {
         </div>
       ) : (
         <div className="space-y-6">
+          {devolvida && (
+            <div className="rounded-xl border border-warning/50 bg-warning-soft p-4 text-sm text-warning-foreground">
+              <p className="font-medium">A professora devolveu sua redação para edição.</p>
+              <p className="mt-1">Revise o texto e entregue novamente.</p>
+              {entrega?.comentario && <p className="mt-2 whitespace-pre-wrap">Comentário anterior: {entrega.comentario}</p>}
+            </div>
+          )}
           {/* 3. Campo de escrita */}
           <div>
             <Label htmlFor="redacao" className="text-sm font-medium">Sua redação</Label>
