@@ -114,6 +114,7 @@ export type Database = {
           comentario: string | null
           corrected_at: string | null
           created_at: string
+          devolvida_em: string | null
           id: string
           marcacoes: Json
           nota: number | null
@@ -129,6 +130,7 @@ export type Database = {
           comentario?: string | null
           corrected_at?: string | null
           created_at?: string
+          devolvida_em?: string | null
           id?: string
           marcacoes?: Json
           nota?: number | null
@@ -144,6 +146,7 @@ export type Database = {
           comentario?: string | null
           corrected_at?: string | null
           created_at?: string
+          devolvida_em?: string | null
           id?: string
           marcacoes?: Json
           nota?: number | null
