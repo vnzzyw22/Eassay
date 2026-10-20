@@ -9,46 +9,40 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
-import { Route as CadastroRouteImport } from './routes/cadastro'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedAlunoRouteRouteImport } from './routes/_authenticated/aluno/route'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
-import { Route as ApiPublicValidaCodigoSalaRouteImport } from './routes/api/public/valida-codigo-sala'
-import { Route as AuthenticatedAlunoRankingRouteImport } from './routes/_authenticated/aluno/ranking'
-import { Route as AuthenticatedAlunoPerfilRouteImport } from './routes/_authenticated/aluno/perfil'
-import { Route as AuthenticatedAlunoEntregasRouteImport } from './routes/_authenticated/aluno/entregas'
-import { Route as AuthenticatedAlunoDashboardRouteImport } from './routes/_authenticated/aluno/dashboard'
-import { Route as AuthenticatedAlunoAtividadesRouteImport } from './routes/_authenticated/aluno/atividades'
-import { Route as AuthenticatedAdminSalasRouteImport } from './routes/_authenticated/admin/salas'
-import { Route as AuthenticatedAdminRankingRouteImport } from './routes/_authenticated/admin/ranking'
-import { Route as AuthenticatedAdminNotasRouteImport } from './routes/_authenticated/admin/notas'
-import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
-import { Route as AuthenticatedAdminCorrecoesRouteImport } from './routes/_authenticated/admin/correcoes'
-import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
-import { Route as AuthenticatedAdminAtividadesRouteImport } from './routes/_authenticated/admin/atividades'
+import { Route as AuthenticatedAlunoRouteRouteImport } from './routes/_authenticated/aluno/route'
 import { Route as AuthenticatedAdminAlunosRouteImport } from './routes/_authenticated/admin/alunos'
-import { Route as AuthenticatedAlunoAtividadesIdRouteImport } from './routes/_authenticated/aluno/atividades_.$id'
-import { Route as AuthenticatedAdminSalasIdRouteImport } from './routes/_authenticated/admin/salas_.$id'
-import { Route as AuthenticatedAdminCorrecoesIdRouteImport } from './routes/_authenticated/admin/correcoes_.$id'
+import { Route as AuthenticatedAdminAtividadesRouteImport } from './routes/_authenticated/admin/atividades'
+import { Route as AuthenticatedAdminConfiguracoesRouteImport } from './routes/_authenticated/admin/configuracoes'
+import { Route as AuthenticatedAdminCorrecoesRouteImport } from './routes/_authenticated/admin/correcoes'
+import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin/dashboard'
+import { Route as AuthenticatedAdminNotasRouteImport } from './routes/_authenticated/admin/notas'
+import { Route as AuthenticatedAdminRankingRouteImport } from './routes/_authenticated/admin/ranking'
+import { Route as AuthenticatedAdminSalasRouteImport } from './routes/_authenticated/admin/salas'
+import { Route as AuthenticatedAlunoAtividadesRouteImport } from './routes/_authenticated/aluno/atividades'
+import { Route as AuthenticatedAlunoDashboardRouteImport } from './routes/_authenticated/aluno/dashboard'
+import { Route as AuthenticatedAlunoEntregasRouteImport } from './routes/_authenticated/aluno/entregas'
+import { Route as AuthenticatedAlunoPerfilRouteImport } from './routes/_authenticated/aluno/perfil'
+import { Route as AuthenticatedAlunoRankingRouteImport } from './routes/_authenticated/aluno/ranking'
+import { Route as ApiPublicValidaCodigoSalaRouteImport } from './routes/api/public/valida-codigo-sala'
 import { Route as AuthenticatedAdminAlunosIdRouteImport } from './routes/_authenticated/admin/alunos_.$id'
+import { Route as AuthenticatedAdminCorrecoesIdRouteImport } from './routes/_authenticated/admin/correcoes_.$id'
+import { Route as AuthenticatedAdminSalasIdRouteImport } from './routes/_authenticated/admin/salas_.$id'
+import { Route as AuthenticatedAlunoAtividadesIdRouteImport } from './routes/_authenticated/aluno/atividades_.$id'
 
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
-  id: '/recuperar-senha',
-  path: '/recuperar-senha',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CadastroRoute = CadastroRouteImport.update({
-  id: '/cadastro',
-  path: '/cadastro',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -56,93 +50,35 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
+  id: '/recuperar-senha',
+  path: '/recuperar-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAlunoRouteRoute = AuthenticatedAlunoRouteRouteImport.update({
-  id: '/aluno',
-  path: '/aluno',
-  getParentRoute: () => AuthenticatedRouteRoute,
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiPublicValidaCodigoSalaRoute =
-  ApiPublicValidaCodigoSalaRouteImport.update({
-    id: '/api/public/valida-codigo-sala',
-    path: '/api/public/valida-codigo-sala',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AuthenticatedAlunoRankingRoute =
-  AuthenticatedAlunoRankingRouteImport.update({
-    id: '/ranking',
-    path: '/ranking',
-    getParentRoute: () => AuthenticatedAlunoRouteRoute,
-  } as any)
-const AuthenticatedAlunoPerfilRoute =
-  AuthenticatedAlunoPerfilRouteImport.update({
-    id: '/perfil',
-    path: '/perfil',
-    getParentRoute: () => AuthenticatedAlunoRouteRoute,
-  } as any)
-const AuthenticatedAlunoEntregasRoute =
-  AuthenticatedAlunoEntregasRouteImport.update({
-    id: '/entregas',
-    path: '/entregas',
-    getParentRoute: () => AuthenticatedAlunoRouteRoute,
-  } as any)
-const AuthenticatedAlunoDashboardRoute =
-  AuthenticatedAlunoDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => AuthenticatedAlunoRouteRoute,
-  } as any)
-const AuthenticatedAlunoAtividadesRoute =
-  AuthenticatedAlunoAtividadesRouteImport.update({
-    id: '/atividades',
-    path: '/atividades',
-    getParentRoute: () => AuthenticatedAlunoRouteRoute,
-  } as any)
-const AuthenticatedAdminSalasRoute = AuthenticatedAdminSalasRouteImport.update({
-  id: '/salas',
-  path: '/salas',
-  getParentRoute: () => AuthenticatedAdminRouteRoute,
+const AuthenticatedAlunoRouteRoute = AuthenticatedAlunoRouteRouteImport.update({
+  id: '/aluno',
+  path: '/aluno',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAdminRankingRoute =
-  AuthenticatedAdminRankingRouteImport.update({
-    id: '/ranking',
-    path: '/ranking',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
-  } as any)
-const AuthenticatedAdminNotasRoute = AuthenticatedAdminNotasRouteImport.update({
-  id: '/notas',
-  path: '/notas',
-  getParentRoute: () => AuthenticatedAdminRouteRoute,
-} as any)
-const AuthenticatedAdminDashboardRoute =
-  AuthenticatedAdminDashboardRouteImport.update({
-    id: '/dashboard',
-    path: '/dashboard',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
-  } as any)
-const AuthenticatedAdminCorrecoesRoute =
-  AuthenticatedAdminCorrecoesRouteImport.update({
-    id: '/correcoes',
-    path: '/correcoes',
-    getParentRoute: () => AuthenticatedAdminRouteRoute,
-  } as any)
-const AuthenticatedAdminConfiguracoesRoute =
-  AuthenticatedAdminConfiguracoesRouteImport.update({
-    id: '/configuracoes',
-    path: '/configuracoes',
+const AuthenticatedAdminAlunosRoute =
+  AuthenticatedAdminAlunosRouteImport.update({
+    id: '/alunos',
+    path: '/alunos',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminAtividadesRoute =
@@ -151,22 +87,80 @@ const AuthenticatedAdminAtividadesRoute =
     path: '/atividades',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
-const AuthenticatedAdminAlunosRoute =
-  AuthenticatedAdminAlunosRouteImport.update({
-    id: '/alunos',
-    path: '/alunos',
+const AuthenticatedAdminConfiguracoesRoute =
+  AuthenticatedAdminConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
-const AuthenticatedAlunoAtividadesIdRoute =
-  AuthenticatedAlunoAtividadesIdRouteImport.update({
-    id: '/atividades_/$id',
-    path: '/atividades/$id',
+const AuthenticatedAdminCorrecoesRoute =
+  AuthenticatedAdminCorrecoesRouteImport.update({
+    id: '/correcoes',
+    path: '/correcoes',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminDashboardRoute =
+  AuthenticatedAdminDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminNotasRoute = AuthenticatedAdminNotasRouteImport.update({
+  id: '/notas',
+  path: '/notas',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAdminRankingRoute =
+  AuthenticatedAdminRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminSalasRoute = AuthenticatedAdminSalasRouteImport.update({
+  id: '/salas',
+  path: '/salas',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedAlunoAtividadesRoute =
+  AuthenticatedAlunoAtividadesRouteImport.update({
+    id: '/atividades',
+    path: '/atividades',
     getParentRoute: () => AuthenticatedAlunoRouteRoute,
   } as any)
-const AuthenticatedAdminSalasIdRoute =
-  AuthenticatedAdminSalasIdRouteImport.update({
-    id: '/salas_/$id',
-    path: '/salas/$id',
+const AuthenticatedAlunoDashboardRoute =
+  AuthenticatedAlunoDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
+  } as any)
+const AuthenticatedAlunoEntregasRoute =
+  AuthenticatedAlunoEntregasRouteImport.update({
+    id: '/entregas',
+    path: '/entregas',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
+  } as any)
+const AuthenticatedAlunoPerfilRoute =
+  AuthenticatedAlunoPerfilRouteImport.update({
+    id: '/perfil',
+    path: '/perfil',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
+  } as any)
+const AuthenticatedAlunoRankingRoute =
+  AuthenticatedAlunoRankingRouteImport.update({
+    id: '/ranking',
+    path: '/ranking',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
+  } as any)
+const ApiPublicValidaCodigoSalaRoute =
+  ApiPublicValidaCodigoSalaRouteImport.update({
+    id: '/api/public/valida-codigo-sala',
+    path: '/api/public/valida-codigo-sala',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAdminAlunosIdRoute =
+  AuthenticatedAdminAlunosIdRouteImport.update({
+    id: '/alunos_/$id',
+    path: '/alunos/$id',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminCorrecoesIdRoute =
@@ -175,11 +169,17 @@ const AuthenticatedAdminCorrecoesIdRoute =
     path: '/correcoes/$id',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
-const AuthenticatedAdminAlunosIdRoute =
-  AuthenticatedAdminAlunosIdRouteImport.update({
-    id: '/alunos_/$id',
-    path: '/alunos/$id',
+const AuthenticatedAdminSalasIdRoute =
+  AuthenticatedAdminSalasIdRouteImport.update({
+    id: '/salas_/$id',
+    path: '/salas/$id',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAlunoAtividadesIdRoute =
+  AuthenticatedAlunoAtividadesIdRouteImport.update({
+    id: '/atividades_/$id',
+    path: '/atividades/$id',
+    getParentRoute: () => AuthenticatedAlunoRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -362,32 +362,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recuperar-senha': {
-      id: '/recuperar-senha'
-      path: '/recuperar-senha'
-      fullPath: '/recuperar-senha'
-      preLoaderRoute: typeof RecuperarSenhaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/cadastro': {
-      id: '/cadastro'
-      path: '/cadastro'
-      fullPath: '/cadastro'
-      preLoaderRoute: typeof CadastroRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -397,19 +376,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/aluno': {
-      id: '/_authenticated/aluno'
-      path: '/aluno'
-      fullPath: '/aluno'
-      preLoaderRoute: typeof AuthenticatedAlunoRouteRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recuperar-senha': {
+      id: '/recuperar-senha'
+      path: '/recuperar-senha'
+      fullPath: '/recuperar-senha'
+      preLoaderRoute: typeof RecuperarSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -418,88 +411,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/public/valida-codigo-sala': {
-      id: '/api/public/valida-codigo-sala'
-      path: '/api/public/valida-codigo-sala'
-      fullPath: '/api/public/valida-codigo-sala'
-      preLoaderRoute: typeof ApiPublicValidaCodigoSalaRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/aluno': {
+      id: '/_authenticated/aluno'
+      path: '/aluno'
+      fullPath: '/aluno'
+      preLoaderRoute: typeof AuthenticatedAlunoRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/aluno/ranking': {
-      id: '/_authenticated/aluno/ranking'
-      path: '/ranking'
-      fullPath: '/aluno/ranking'
-      preLoaderRoute: typeof AuthenticatedAlunoRankingRouteImport
-      parentRoute: typeof AuthenticatedAlunoRouteRoute
-    }
-    '/_authenticated/aluno/perfil': {
-      id: '/_authenticated/aluno/perfil'
-      path: '/perfil'
-      fullPath: '/aluno/perfil'
-      preLoaderRoute: typeof AuthenticatedAlunoPerfilRouteImport
-      parentRoute: typeof AuthenticatedAlunoRouteRoute
-    }
-    '/_authenticated/aluno/entregas': {
-      id: '/_authenticated/aluno/entregas'
-      path: '/entregas'
-      fullPath: '/aluno/entregas'
-      preLoaderRoute: typeof AuthenticatedAlunoEntregasRouteImport
-      parentRoute: typeof AuthenticatedAlunoRouteRoute
-    }
-    '/_authenticated/aluno/dashboard': {
-      id: '/_authenticated/aluno/dashboard'
-      path: '/dashboard'
-      fullPath: '/aluno/dashboard'
-      preLoaderRoute: typeof AuthenticatedAlunoDashboardRouteImport
-      parentRoute: typeof AuthenticatedAlunoRouteRoute
-    }
-    '/_authenticated/aluno/atividades': {
-      id: '/_authenticated/aluno/atividades'
-      path: '/atividades'
-      fullPath: '/aluno/atividades'
-      preLoaderRoute: typeof AuthenticatedAlunoAtividadesRouteImport
-      parentRoute: typeof AuthenticatedAlunoRouteRoute
-    }
-    '/_authenticated/admin/salas': {
-      id: '/_authenticated/admin/salas'
-      path: '/salas'
-      fullPath: '/admin/salas'
-      preLoaderRoute: typeof AuthenticatedAdminSalasRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/ranking': {
-      id: '/_authenticated/admin/ranking'
-      path: '/ranking'
-      fullPath: '/admin/ranking'
-      preLoaderRoute: typeof AuthenticatedAdminRankingRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/notas': {
-      id: '/_authenticated/admin/notas'
-      path: '/notas'
-      fullPath: '/admin/notas'
-      preLoaderRoute: typeof AuthenticatedAdminNotasRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/dashboard': {
-      id: '/_authenticated/admin/dashboard'
-      path: '/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/correcoes': {
-      id: '/_authenticated/admin/correcoes'
-      path: '/correcoes'
-      fullPath: '/admin/correcoes'
-      preLoaderRoute: typeof AuthenticatedAdminCorrecoesRouteImport
-      parentRoute: typeof AuthenticatedAdminRouteRoute
-    }
-    '/_authenticated/admin/configuracoes': {
-      id: '/_authenticated/admin/configuracoes'
-      path: '/configuracoes'
-      fullPath: '/admin/configuracoes'
-      preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
+    '/_authenticated/admin/alunos': {
+      id: '/_authenticated/admin/alunos'
+      path: '/alunos'
+      fullPath: '/admin/alunos'
+      preLoaderRoute: typeof AuthenticatedAdminAlunosRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/atividades': {
@@ -509,25 +432,95 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminAtividadesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
-    '/_authenticated/admin/alunos': {
-      id: '/_authenticated/admin/alunos'
-      path: '/alunos'
-      fullPath: '/admin/alunos'
-      preLoaderRoute: typeof AuthenticatedAdminAlunosRouteImport
+    '/_authenticated/admin/configuracoes': {
+      id: '/_authenticated/admin/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AuthenticatedAdminConfiguracoesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
-    '/_authenticated/aluno/atividades_/$id': {
-      id: '/_authenticated/aluno/atividades_/$id'
-      path: '/atividades/$id'
-      fullPath: '/aluno/atividades/$id'
-      preLoaderRoute: typeof AuthenticatedAlunoAtividadesIdRouteImport
+    '/_authenticated/admin/correcoes': {
+      id: '/_authenticated/admin/correcoes'
+      path: '/correcoes'
+      fullPath: '/admin/correcoes'
+      preLoaderRoute: typeof AuthenticatedAdminCorrecoesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/dashboard': {
+      id: '/_authenticated/admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/notas': {
+      id: '/_authenticated/admin/notas'
+      path: '/notas'
+      fullPath: '/admin/notas'
+      preLoaderRoute: typeof AuthenticatedAdminNotasRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/ranking': {
+      id: '/_authenticated/admin/ranking'
+      path: '/ranking'
+      fullPath: '/admin/ranking'
+      preLoaderRoute: typeof AuthenticatedAdminRankingRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/salas': {
+      id: '/_authenticated/admin/salas'
+      path: '/salas'
+      fullPath: '/admin/salas'
+      preLoaderRoute: typeof AuthenticatedAdminSalasRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/aluno/atividades': {
+      id: '/_authenticated/aluno/atividades'
+      path: '/atividades'
+      fullPath: '/aluno/atividades'
+      preLoaderRoute: typeof AuthenticatedAlunoAtividadesRouteImport
       parentRoute: typeof AuthenticatedAlunoRouteRoute
     }
-    '/_authenticated/admin/salas_/$id': {
-      id: '/_authenticated/admin/salas_/$id'
-      path: '/salas/$id'
-      fullPath: '/admin/salas/$id'
-      preLoaderRoute: typeof AuthenticatedAdminSalasIdRouteImport
+    '/_authenticated/aluno/dashboard': {
+      id: '/_authenticated/aluno/dashboard'
+      path: '/dashboard'
+      fullPath: '/aluno/dashboard'
+      preLoaderRoute: typeof AuthenticatedAlunoDashboardRouteImport
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
+    }
+    '/_authenticated/aluno/entregas': {
+      id: '/_authenticated/aluno/entregas'
+      path: '/entregas'
+      fullPath: '/aluno/entregas'
+      preLoaderRoute: typeof AuthenticatedAlunoEntregasRouteImport
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
+    }
+    '/_authenticated/aluno/perfil': {
+      id: '/_authenticated/aluno/perfil'
+      path: '/perfil'
+      fullPath: '/aluno/perfil'
+      preLoaderRoute: typeof AuthenticatedAlunoPerfilRouteImport
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
+    }
+    '/_authenticated/aluno/ranking': {
+      id: '/_authenticated/aluno/ranking'
+      path: '/ranking'
+      fullPath: '/aluno/ranking'
+      preLoaderRoute: typeof AuthenticatedAlunoRankingRouteImport
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
+    }
+    '/api/public/valida-codigo-sala': {
+      id: '/api/public/valida-codigo-sala'
+      path: '/api/public/valida-codigo-sala'
+      fullPath: '/api/public/valida-codigo-sala'
+      preLoaderRoute: typeof ApiPublicValidaCodigoSalaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin/alunos_/$id': {
+      id: '/_authenticated/admin/alunos_/$id'
+      path: '/alunos/$id'
+      fullPath: '/admin/alunos/$id'
+      preLoaderRoute: typeof AuthenticatedAdminAlunosIdRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/correcoes_/$id': {
@@ -537,12 +530,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCorrecoesIdRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
-    '/_authenticated/admin/alunos_/$id': {
-      id: '/_authenticated/admin/alunos_/$id'
-      path: '/alunos/$id'
-      fullPath: '/admin/alunos/$id'
-      preLoaderRoute: typeof AuthenticatedAdminAlunosIdRouteImport
+    '/_authenticated/admin/salas_/$id': {
+      id: '/_authenticated/admin/salas_/$id'
+      path: '/salas/$id'
+      fullPath: '/admin/salas/$id'
+      preLoaderRoute: typeof AuthenticatedAdminSalasIdRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/aluno/atividades_/$id': {
+      id: '/_authenticated/aluno/atividades_/$id'
+      path: '/atividades/$id'
+      fullPath: '/aluno/atividades/$id'
+      preLoaderRoute: typeof AuthenticatedAlunoAtividadesIdRouteImport
+      parentRoute: typeof AuthenticatedAlunoRouteRoute
     }
   }
 }
