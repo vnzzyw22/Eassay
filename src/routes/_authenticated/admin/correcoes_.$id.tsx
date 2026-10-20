@@ -10,6 +10,18 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
+import { Undo2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/admin/correcoes_/$id")({
   component: Page,
@@ -23,6 +35,7 @@ function Page() {
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [marcacoes, setMarcacoes] = useState<Marcacao[]>([]);
   const [categoria, setCategoria] = useState<Categoria>("ortografia");
+  const [devolvendo, setDevolvendo] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -71,6 +84,23 @@ function Page() {
       .eq("id", id);
     if (error) toast.error(error.message);
     else toast.success("Correção salva.");
+  };
+
+  const devolver = async () => {
+    if (devolvendo) return;
+    setDevolvendo(true);
+    const { data, error } = await supabase
+      .from("entregas")
+      .update({ status: "rascunho", devolvida_em: new Date().toISOString() })
+      .eq("id", id)
+      .eq("status", entrega.status) // evita sobrescrever mudança concorrente
+      .select("status, devolvida_em")
+      .maybeSingle();
+    setDevolvendo(false);
+    if (error) return void toast.error(`Não foi possível devolver: ${error.message}`);
+    if (!data) return void toast.error("A redação foi alterada por outra ação. Recarregue a página.");
+    setEntrega((e: any) => ({ ...e, ...data }));
+    toast.success("Redação devolvida. O aluno já pode editar e entregar novamente.");
   };
 
   if (!entrega) return <p>Carregando...</p>;
@@ -139,7 +169,37 @@ function Page() {
         <CardContent className="space-y-4">
           <div><Label>Nota</Label><Input type="number" step="0.1" value={nota} onChange={(e) => setNota(e.target.value)} /></div>
           <div><Label>Comentário</Label><Textarea rows={5} value={comentario} onChange={(e) => setComentario(e.target.value)} /></div>
-          <Button onClick={salvar}>Salvar correção</Button>
+          <div className="grid grid-cols-1 gap-3 sm:flex sm:flex-wrap">
+            <Button onClick={salvar}>Salvar correção</Button>
+            {entrega.status !== "rascunho" && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline" disabled={devolvendo}>
+                    <Undo2 className="mr-2 h-4 w-4" strokeWidth={1.75} />
+                    {devolvendo ? "Devolvendo..." : "Devolver para edição"}
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Devolver redação para edição?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      A redação será disponibilizada novamente para o aluno editar e entregar, mesmo após o prazo.
+                      O texto, a nota e o comentário atuais serão mantidos.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={devolver}>Devolver</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            )}
+          </div>
+          {entrega.status === "rascunho" && entrega.devolvida_em && (
+            <p className="text-sm text-muted-foreground">
+              Devolvida para edição em {new Date(entrega.devolvida_em).toLocaleString("pt-BR")}. Aguardando novo envio do aluno.
+            </p>
+          )}
         </CardContent>
       </Card>
     </div>
