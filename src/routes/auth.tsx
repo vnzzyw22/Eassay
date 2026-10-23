@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { matricularAluno } from "@/lib/matricula.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { School, User, UserPlus, LogIn, ArrowLeft } from "lucide-react";
@@ -153,9 +154,8 @@ function AuthPage() {
                 </div>
                 <div>
                   <Label htmlFor="senha" className="text-login-ink font-medium">Senha</Label>
-                  <Input
+                  <PasswordInput
                     id="senha"
-                    type="password"
                     required
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}
