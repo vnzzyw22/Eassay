@@ -153,9 +153,8 @@ function AuthPage() {
                 </div>
                 <div>
                   <Label htmlFor="senha" className="text-login-ink font-medium">Senha</Label>
-                  <Input
+                  <PasswordInput
                     id="senha"
-                    type="password"
                     required
                     value={senha}
                     onChange={(e) => setSenha(e.target.value)}

@@ -123,7 +123,7 @@ function CadastroPage() {
             </div>
             <div>
               <Label htmlFor="senha">Senha</Label>
-              <Input id="senha" type="password" required minLength={6} value={senha} onChange={(e) => setSenha(e.target.value)} />
+              <PasswordInput id="senha" required minLength={6} value={senha} onChange={(e) => setSenha(e.target.value)} />
             </div>
             <div>
               <Label htmlFor="codigo">Código da sala</Label>
