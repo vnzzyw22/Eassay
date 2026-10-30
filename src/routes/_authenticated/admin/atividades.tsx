@@ -42,6 +42,9 @@ function Page() {
   const [filtroSala, setFiltroSala] = useState<string>("todas");
   const [aExcluir, setAExcluir] = useState<any | null>(null);
   const [excluindo, setExcluindo] = useState(false);
+  const [aPrazo, setAPrazo] = useState<any | null>(null);
+  const [novoPrazo, setNovoPrazo] = useState("");
+  const [salvandoPrazo, setSalvandoPrazo] = useState(false);
 
   const load = async () => {
     const { data } = await supabase
@@ -127,6 +130,26 @@ function Page() {
     load();
   };
 
+  const abrirPrazo = (a: any) => {
+    const d = new Date(a.prazo);
+    const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    setNovoPrazo(local);
+    setAPrazo(a);
+  };
+
+  const salvarPrazo = async () => {
+    if (!aPrazo || !novoPrazo) return;
+    const nd = new Date(novoPrazo);
+    if (nd <= new Date(aPrazo.prazo)) { toast.error("O novo prazo deve ser depois do prazo atual."); return; }
+    setSalvandoPrazo(true);
+    const { error } = await supabase.from("atividades").update({ prazo: nd.toISOString() }).eq("id", aPrazo.id);
+    setSalvandoPrazo(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Prazo estendido.");
+    setAPrazo(null);
+    load();
+  };
+
   const visiveis =
     filtroSala === "todas"
       ? ativs
@@ -200,6 +223,9 @@ function Page() {
                   <Button size="sm" variant="outline" onClick={() => togglePublish(a)}>
                     {a.publicada ? "Despublicar" : "Publicar"}
                   </Button>
+                  <Button size="sm" variant="outline" onClick={() => abrirPrazo(a)}>
+                    Estender prazo
+                  </Button>
                   <Button size="sm" variant="destructive" onClick={() => setAExcluir(a)}>
                     Excluir
                   </Button>
@@ -214,6 +240,21 @@ function Page() {
           </p>
         )}
       </div>
+
+      <Dialog open={!!aPrazo} onOpenChange={(o) => !o && setAPrazo(null)}>
+        <DialogContent className="w-[calc(100vw-2rem)] max-w-md">
+          <DialogHeader><DialogTitle>Estender prazo</DialogTitle></DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground break-words">
+              “{aPrazo?.titulo}” — prazo atual: {aPrazo && new Date(aPrazo.prazo).toLocaleString()}
+            </p>
+            <div><Label>Novo prazo</Label><Input type="datetime-local" value={novoPrazo} onChange={(e) => setNovoPrazo(e.target.value)} /></div>
+            <Button className="w-full" disabled={salvandoPrazo} onClick={salvarPrazo}>
+              {salvandoPrazo ? "Salvando..." : "Salvar novo prazo"}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <AlertDialog open={!!aExcluir} onOpenChange={(o) => !o && setAExcluir(null)}>
         <AlertDialogContent>
